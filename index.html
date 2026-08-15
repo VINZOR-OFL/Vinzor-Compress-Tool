@@ -5,117 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Image Studio Pro - AI Passport & Govt Form Suite</title>
   
-  <!-- PWA Theme Color & Meta -->
+  <!-- PWA Theme Color & App Meta -->
   <meta name="theme-color" content="#6366f1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Image Studio Pro">
   
-  <!-- Favicon / Logo SVG -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Cpath d='M30 68 L46 48 L56 58 L68 40 L82 68 Z' fill='%23ffffff'/%3E%3Ccircle cx='40' cy='36' r='8' fill='%23fcd34d'/%3E%3Cpath d='M22 32 A 10 10 0 0 1 32 22 M68 22 A 10 10 0 0 1 78 32 M78 68 A 10 10 0 0 1 68 78 M32 78 A 10 10 0 0 1 22 68' stroke='%23ffffff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Cpath d='M30 68 L46 48 L56 58 L68 40 L82 68 Z' fill='%23ffffff'/%3E%3Ccircle cx='40' cy='36' r='8' fill='%23fcd34d'/%3E%3Cpath d='M22 32 A 10 10 0 0 1 32 22 M68 22 A 10 10 0 0 1 78 32 M78 68 A 10 10 0 0 1 68 78 M32 78 A 10 10 0 0 1 22 68' stroke='%23ffffff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <!-- Logo & Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%236366f1'/%3E%3Ccircle cx='50' cy='50' r='24' stroke='white' stroke-width='6' fill='none'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23fcd34d'/%3E%3Cpath d='M24 38 L34 26 H66 L76 38' stroke='white' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 
-  <!-- External Free Libraries -->
+  <!-- External Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-  <!-- MediaPipe Selfie Segmentation for 100% Client-Side AI Background Matting -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 
   <style>
     :root {
       --primary: #6366f1;
       --primary-hover: #4f46e5;
-      --primary-light: #e0e7ff;
       --accent: #a855f7;
-      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
       --success: #10b981;
-      --success-dark: #047857;
       --danger: #f43f5e;
-      --dark-bg: #090d16;
-      --card-bg: rgba(255, 255, 255, 0.98);
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border-color: #e2e8f0;
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-      --shadow-md: 0 10px 25px -5px rgba(99, 102, 241, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+      --dark: #0f172a;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
     }
-
     * { box-sizing: border-box; }
-
     body {
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       background: radial-gradient(circle at 10% 10%, #1e1b4b, #0f172a 55%, #180828 100%);
       min-height: 100vh;
       margin: 0;
-      padding: 25px 15px 60px 15px;
+      padding: 16px 10px 50px 10px;
       color: #f8fafc;
-      -webkit-font-smoothing: antialiased;
     }
-
     .app-container {
-      max-width: 1020px;
+      max-width: 950px;
       margin: 0 auto;
-      background: var(--card-bg);
-      border-radius: 28px;
-      box-shadow: var(--shadow-lg);
-      color: var(--text-main);
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      color: var(--text);
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
-
-    /* Header & Branding */
     .header {
-      background: var(--accent-gradient);
-      padding: 28px 32px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
+      padding: 22px 26px;
       color: white;
-      position: relative;
-      overflow: hidden;
-    }
-    .header::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-      pointer-events: none;
     }
     .header-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 12px;
     }
-    .brand-block {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+    .brand { display: flex; align-items: center; gap: 12px; }
     .brand-logo {
-      width: 52px;
-      height: 52px;
+      width: 46px;
+      height: 46px;
       background: rgba(255, 255, 255, 0.2);
       border: 2px solid rgba(255, 255, 255, 0.4);
-      border-radius: 16px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-      backdrop-filter: blur(8px);
       flex-shrink: 0;
     }
-    .brand-logo svg { width: 32px; height: 32px; }
-    .brand-title h1 {
+    .brand-logo svg { width: 28px; height: 28px; }
+    .brand-text h1 {
       margin: 0;
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 800;
-      letter-spacing: -0.5px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -123,98 +89,70 @@
     .pro-badge {
       background: #fcd34d;
       color: #78350f;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 900;
-      padding: 3px 8px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
+      padding: 2px 6px;
+      border-radius: 12px;
     }
-    .brand-title p {
-      margin: 4px 0 0 0;
-      font-size: 13px;
-      opacity: 0.92;
-      font-weight: 500;
-    }
-
-    /* PWA Install Button */
-    .btn-install-app {
+    .brand-text p { margin: 3px 0 0 0; font-size: 12px; opacity: 0.9; }
+    .btn-install {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: #ffffff;
       color: #4338ca;
-      padding: 9px 18px;
-      border-radius: 22px;
-      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: 700;
       border: none;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
     }
-    .btn-install-app:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-      background: #f8fafc;
-    }
-    .btn-install-app svg { width: 16px; height: 16px; }
-
-    /* Quick Preset Chips */
-    .quick-chips-bar {
-      margin-top: 18px;
+    .btn-install:hover { transform: scale(1.03); }
+    .quick-chips {
+      margin-top: 14px;
       display: flex;
-      align-items: center;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
-      padding-bottom: 4px;
       scrollbar-width: none;
     }
-    .quick-chips-bar::-webkit-scrollbar { display: none; }
-    .quick-chip {
+    .quick-chips::-webkit-scrollbar { display: none; }
+    .chip {
       background: rgba(255, 255, 255, 0.18);
       border: 1px solid rgba(255, 255, 255, 0.35);
       color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
     }
-    .quick-chip:hover {
-      background: white;
-      color: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    /* Navigation Tabs */
+    .chip:hover { background: white; color: var(--primary-hover); }
     .tab-nav {
       display: flex;
       background: #f8fafc;
-      border-bottom: 2px solid var(--border-color);
+      border-bottom: 2px solid var(--border);
       overflow-x: auto;
       scrollbar-width: none;
     }
     .tab-nav::-webkit-scrollbar { display: none; }
-
     .tab-btn {
       flex: 1;
-      min-width: 155px;
-      padding: 16px 14px;
+      min-width: 135px;
+      padding: 13px 8px;
       border: none;
       background: transparent;
       font-weight: 700;
-      font-size: 13px;
-      color: var(--text-muted);
+      font-size: 12px;
+      color: var(--muted);
       cursor: pointer;
       transition: all 0.2s;
       text-align: center;
       white-space: nowrap;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
       border-bottom: 3px solid transparent;
     }
     .tab-btn:hover { color: var(--primary); background: #f1f5f9; }
@@ -223,233 +161,110 @@
       background: white;
       border-bottom: 3px solid var(--primary);
     }
-
-    .tab-content {
-      padding: 28px;
-      display: none;
-      animation: fadeIn 0.25s ease-in-out;
-    }
+    .tab-content { padding: 20px; display: none; }
     .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Dropzone */
     .dropzone {
       border: 2.5px dashed #c084fc;
       background: #faf5ff;
-      border-radius: 20px;
-      padding: 40px 20px;
+      border-radius: 16px;
+      padding: 30px 16px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .dropzone:hover, .dropzone.dragover {
-      background: #f3e8ff;
-      border-color: #7e22ce;
-      transform: scale(1.01);
-      box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2);
-    }
-    .dropzone input { display: none; }
-    .drop-icon {
-      font-size: 48px;
-      margin-bottom: 10px;
-      animation: bounce 2s infinite ease-in-out;
-    }
-    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-    /* Grid Controls */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
-
-    @media (max-width: 768px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-      .tab-btn { font-size: 12px; min-width: 135px; padding: 12px 8px; }
-      .header { padding: 20px; }
-      .tab-content { padding: 20px 16px; }
-    }
-
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 16px;
-    }
-
-    label {
-      font-weight: 700;
-      font-size: 12px;
-      margin-bottom: 8px;
-      color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    select, input[type="text"], input[type="number"], input[type="date"], input[type="range"] {
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 2px solid var(--border-color);
-      background: white;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
-      outline: none;
       transition: all 0.2s;
     }
-    select:focus, input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    .dropzone:hover, .dropzone.dragover { background: #f3e8ff; border-color: #7e22ce; transform: scale(1.01); }
+    .dropzone input { display: none; }
+    .drop-icon { font-size: 38px; margin-bottom: 6px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 650px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .header { padding: 16px; }
+      .tab-content { padding: 14px; }
     }
-
-    .tip-card {
-      background: #f8fafc;
-      border: 1px solid var(--border-color);
-      border-left: 4px solid var(--primary);
-      padding: 14px 18px;
-      border-radius: 12px;
-      font-size: 13px;
-      color: #475569;
-      line-height: 1.5;
-    }
-
-    /* Action Buttons */
-    .btn-bar {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 25px;
-    }
-
-    button {
-      padding: 14px 20px;
-      border: none;
-      border-radius: 14px;
+    .control-group { display: flex; flex-direction: column; margin-bottom: 12px; }
+    label {
       font-weight: 700;
-      font-size: 14px;
+      font-size: 11px;
+      margin-bottom: 6px;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    select, input[type="text"], input[type="number"], input[type="date"], input[type="range"] {
+      padding: 9px 11px;
+      border-radius: 9px;
+      border: 2px solid var(--border);
+      background: white;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      outline: none;
+    }
+    select:focus, input:focus { border-color: var(--primary); }
+    .tip-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      color: #475569;
+    }
+    .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+    button {
+      padding: 11px 15px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 5px;
     }
     button:active { transform: scale(0.97); }
-
-    .btn-main {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      color: white;
-      flex: 2;
-      min-width: 200px;
-      box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.4);
-    }
-    .btn-main:hover {
-      background: linear-gradient(135deg, #4f46e5, #4338ca);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px -4px rgba(99, 102, 241, 0.5);
-    }
-
-    .btn-zip {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      flex: 1;
-      min-width: 150px;
-      box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.35);
-    }
-    .btn-zip:hover { transform: translateY(-2px); background: #059669; }
-
-    .btn-pdf {
-      background: linear-gradient(135deg, #f43f5e, #e11d48);
-      color: white;
-      flex: 1;
-      min-width: 150px;
-      box-shadow: 0 8px 20px -4px rgba(244, 63, 94, 0.35);
-    }
-    .btn-pdf:hover { transform: translateY(-2px); background: #e11d48; }
-
-    .btn-clear { background: #f1f5f9; color: #475569; border: 1px solid var(--border-color); }
-    .btn-clear:hover { background: #e2e8f0; color: #0f172a; }
-
+    .btn-main { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; flex: 2; min-width: 170px; }
+    .btn-zip { background: linear-gradient(135deg, #10b981, #059669); color: white; flex: 1; min-width: 130px; }
+    .btn-pdf { background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; flex: 1; min-width: 130px; }
+    .btn-clear { background: #f1f5f9; color: #475569; border: 1px solid var(--border); }
     .btn-reset-opts { background: #fee2e2; color: #991b1b; }
-    .btn-reset-opts:hover { background: #fca5a5; }
-
-    /* File List Queue */
-    .file-list { margin-top: 30px; }
-
+    .file-list { margin-top: 20px; }
     .file-card {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: #ffffff;
-      border: 1.5px solid var(--border-color);
-      border-radius: 16px;
-      padding: 16px 20px;
-      margin-bottom: 14px;
-      gap: 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      gap: 8px;
       flex-wrap: wrap;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.25s;
     }
-    .file-card:hover {
-      border-color: var(--primary);
-      box-shadow: var(--shadow-md);
-    }
-
-    .file-info { display: flex; align-items: center; gap: 16px; }
-    .file-thumb {
-      width: 58px;
-      height: 58px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 1.5px solid #cbd5e1;
-      background: #f1f5f9;
-    }
+    .file-info { display: flex; align-items: center; gap: 10px; }
+    .file-thumb { width: 48px; height: 48px; border-radius: 7px; object-fit: cover; border: 1px solid #cbd5e1; }
     .file-details { display: flex; flex-direction: column; }
-    .file-name {
-      font-weight: 700;
-      font-size: 14.5px;
-      max-width: 250px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #1e293b;
-    }
-    .file-meta { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
-
-    .action-btns { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .btn-sm { padding: 8px 14px; font-size: 12px; border-radius: 10px; font-weight: 700; }
-    .btn-dl {
-      background: var(--success);
-      color: white;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .btn-dl:hover { background: var(--success-dark); }
+    .file-name { font-weight: 700; font-size: 13px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .action-btns { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .btn-sm { padding: 5px 9px; font-size: 11.5px; border-radius: 6px; }
+    .btn-dl { background: var(--success); color: white; text-decoration: none; font-weight: bold; }
     .btn-copy { background: #3b82f6; color: white; }
-    .btn-copy:hover { background: #2563eb; }
-
-    .badge-status {
-      font-size: 11.5px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-weight: 700;
-    }
-    .badge-success { background: #dcfce7; color: #166534; }
-    .badge-warn { background: #fef3c7; color: #92400e; }
-
+    .badge { font-size: 10.5px; padding: 3px 5px; border-radius: 4px; font-weight: 700; }
+    .badge-ok { background: #dcfce7; color: #166534; }
     .status-msg {
-      margin-top: 18px;
+      margin-top: 12px;
       font-weight: 700;
       color: var(--primary);
       text-align: center;
-      font-size: 14.5px;
-      padding: 10px;
-      border-radius: 10px;
-      background: var(--primary-light);
+      font-size: 13px;
+      padding: 8px;
+      border-radius: 8px;
+      background: #e0e7ff;
     }
-
-    /* Modal for Crop / Editor */
     .modal {
       display: none;
       position: fixed;
@@ -458,99 +273,63 @@
       z-index: 9999;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(8px);
     }
-
     .modal-content {
       background: white;
-      padding: 24px;
-      border-radius: 20px;
-      max-width: 650px;
-      width: 92%;
+      padding: 18px;
+      border-radius: 16px;
+      max-width: 580px;
+      width: 90%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: var(--shadow-lg);
     }
-    .modal-content h3 { margin: 0 0 16px 0; font-size: 18px; color: #1e293b; }
-
-    .crop-container { max-height: 380px; margin-bottom: 18px; border-radius: 12px; overflow: hidden; background: #0f172a; }
-
-    /* Cusdis Comments Section */
-    .comments-wrapper {
-      margin-top: 40px;
-      padding: 30px 28px;
+    .crop-box { max-height: 320px; margin-bottom: 12px; }
+    .comments-sec {
+      margin-top: 25px;
+      padding: 20px;
       background: #f8fafc;
-      border-top: 2px solid var(--border-color);
+      border-top: 2px solid var(--border);
     }
-    .comments-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .comments-header h2 {
-      font-size: 18px;
-      color: #1e293b;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .comments-header span { font-size: 13px; color: #64748b; font-weight: 500; }
+    .comments-sec h2 { font-size: 15px; margin: 0 0 12px 0; color: #1e293b; }
   </style>
 </head>
 <body>
 
 <div class="app-container">
-  <!-- Header with SVG Web Logo, Titles & PWA Download Button -->
   <div class="header">
     <div class="header-top">
-      <div class="brand-block">
+      <div class="brand">
         <div class="brand-logo">
-          <!-- Vector Camera & Aperture Logo -->
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 100" fill="none">
             <rect width="100" height="100" rx="20" fill="white" fill-opacity="0.15"/>
             <circle cx="50" cy="50" r="26" stroke="white" stroke-width="6"/>
-            <circle cx="50" cy="50" r="14" fill="#fcd34d"/>
-            <path d="M22 36 L34 22 H66 L78 36" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="72" cy="42" r="4" fill="white"/>
+            <circle cx="50" cy="50" r="13" fill="#fcd34d"/>
+            <path d="M22 36 L34 22 H66 L78 36" stroke="white" stroke-width="5" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="brand-title">
-          <h1>Smart Image Studio <span class="pro-badge">PRO v2.5</span></h1>
-          <p>AI Background Remover, Govt Exam Presets, Custom Resizer & Batch Suite</p>
+        <div class="brand-text">
+          <h1>Smart Image Studio <span class="pro-badge">PRO</span></h1>
+          <p>AI Background Studio, Govt Presets & Batch Suite</p>
         </div>
       </div>
-
-      <!-- One-Click Native PWA Install Button -->
-      <button id="installAppBtn" class="btn-install-app" onclick="triggerAppInstall()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-          <line x1="8" y1="21" x2="16" y2="21"></line>
-          <line x1="12" y1="17" x2="12" y2="21"></line>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="3" x2="12" y2="15"></line>
-        </svg>
-        Install App on PC / Phone
+      <button id="installAppBtn" class="btn-install" onclick="triggerAppInstall()">
+        📲 Install App
       </button>
     </div>
 
-    <!-- Quick 1-Click Action Chips -->
-    <div class="quick-chips-bar">
-      <span style="font-size: 11.5px; opacity: 0.85; font-weight: 700; text-transform: uppercase;">Quick Sets:</span>
-      <div class="quick-chip" onclick="quickApplyPreset('upsc_photo')">⚡ UPSC (350x450 | White BG)</div>
-      <div class="quick-chip" onclick="quickApplyPreset('ssc_photo')">⚡ SSC Photo (&lt;50 KB)</div>
-      <div class="quick-chip" onclick="quickApplyPreset('ssc_sig')">⚡ SSC Signature (&lt;20 KB)</div>
-      <div class="quick-chip" onclick="quickApplyPreset('passport')">⚡ Passport Seva (3.5x4.5 cm)</div>
-      <div class="quick-chip" onclick="quickApplyPreset('neet_photo')">⚡ NEET / Medical (White BG)</div>
-      <div class="quick-chip" onclick="quickApplyPreset('ibps_photo')">⚡ Banking / IBPS (200x230 px)</div>
-      <div class="quick-chip" onclick="quickSetBg('#ffffff')">🎨 Set Pure White BG</div>
-      <div class="quick-chip" onclick="quickSetBg('#3b82f6')">🎨 Set Passport Blue BG</div>
-      <div class="quick-chip" onclick="quickSetBg('transparent')">🪄 Remove Background (PNG)</div>
+    <div class="quick-chips">
+      <div class="chip" onclick="quickPreset('upsc_photo')">⚡ UPSC (350x450 | White BG)</div>
+      <div class="chip" onclick="quickPreset('ssc_photo')">⚡ SSC Photo (&lt;50 KB)</div>
+      <div class="chip" onclick="quickPreset('ssc_sig')">⚡ SSC Signature (&lt;20 KB)</div>
+      <div class="chip" onclick="quickPreset('passport')">⚡ Passport Seva (3.5x4.5 cm)</div>
+      <div class="chip" onclick="quickPreset('neet_photo')">⚡ NEET Passport (White BG)</div>
+      <div class="chip" onclick="quickPreset('ibps_photo')">⚡ Banking / IBPS (200x230 px)</div>
+      <div class="chip" onclick="quickBg('#ffffff')">🎨 Pure White BG</div>
+      <div class="chip" onclick="quickBg('#3b82f6')">🎨 Passport Blue BG</div>
+      <div class="chip" onclick="quickBg('transparent')">🪄 Transparent Cutout</div>
     </div>
   </div>
 
-  <!-- Navigation Tabs -->
   <div class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('uploadTab', this)">📁 1. Upload & Presets</button>
     <button class="tab-btn" onclick="switchTab('dimensionsTab', this)">📐 2. Dimensions & Fit</button>
@@ -559,20 +338,872 @@
     <button class="tab-btn" onclick="switchTab('exportTab', this)">⚙️ 5. Naming & Export</button>
   </div>
 
-  <!-- Tab 1: Upload & Presets -->
+  <!-- Tab 1 -->
   <div class="tab-content active" id="uploadTab">
     <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
       <div class="drop-icon">📸</div>
-      <strong style="color: #6b21a8; font-size: 17px;">Click to Browse or Drag & Drop Photos Here</strong>
-      <p style="margin: 6px 0 0; font-size: 13px; color: #7e22ce;">Supports JPG, PNG, WEBP, JPEG (Batch upload supported)</p>
+      <strong style="color: #6b21a8; font-size: 15px;">Click or Drag & Drop Photos Here</strong>
+      <p style="margin: 3px 0 0; font-size: 11.5px; color: #7e22ce;">Supports JPG, PNG, WEBP (Batch upload supported)</p>
       <input type="file" id="fileInput" accept="image/*" multiple>
     </div>
 
-    <div class="grid-2" style="margin-top: 24px;">
+    <div class="grid-2" style="margin-top: 16px;">
       <div class="control-group">
-        <label>Govt Exam & Portal Presets: <span style="color: var(--primary); font-size: 11px;">Auto-configures all tabs</span></label>
+        <label>Govt Exam & Portal Presets:</label>
         <select id="examPreset" onchange="applyExamPreset()">
           <option value="custom">Custom Settings (Manual Mode)</option>
           <option value="upsc_photo">UPSC Civil Services Photo (20-300 KB | 350x450 px | White BG)</option>
           <option value="ssc_photo">SSC CGL / CHSL Photo (20-50 KB | 3.5cm x 4.5cm | Light BG)</option>
-          <option value="ssc
+          <option value="ssc_sig">SSC Signature (10-20 KB | 4.0cm x 2.0cm | White BG)</option>
+          <option value="passport">Passport Seva Official (20-50 KB | 3.5cm x 4.5cm | White/Blue BG)</option>
+          <option value="neet_photo">NEET NTA Passport (10-200 KB | 3.5cm x 4.5cm | White BG)</option>
+          <option value="gate_photo">GATE / IIT Photo (5-200 KB | 3.5cm x 4.5cm | White BG)</option>
+          <option value="ibps_photo">IBPS / SBI Banking Photo (20-50 KB | 200x230 px | White BG)</option>
+          <option value="ibps_sig">IBPS / SBI Signature (10-20 KB | 140x60 px | White BG)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>File Size Limit Target:</label>
+        <select id="sizeTarget">
+          <option value="0">Original Size (No KB Limit)</option>
+          <option value="20">Under 20 KB (Signatures / SSC / IBPS)</option>
+          <option value="50">Under 50 KB (SSC / Passport / IBPS)</option>
+          <option value="100">Under 100 KB (Govt Portals / State Forms)</option>
+          <option value="200" selected>Under 200 KB (Govt Forms / NEET)</option>
+          <option value="300">Under 300 KB (UPSC Online)</option>
+          <option value="500">Under 500 KB (College Applications)</option>
+          <option value="1024">Under 1 MB</option>
+          <option value="4096">Under 4 MB</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2 -->
+  <div class="tab-content" id="dimensionsTab">
+    <div class="grid-3">
+      <div class="control-group">
+        <label>Width:</label>
+        <input type="number" id="customWidth" placeholder="e.g. 350">
+      </div>
+      <div class="control-group">
+        <label>Height:</label>
+        <input type="number" id="customHeight" placeholder="e.g. 450">
+      </div>
+      <div class="control-group">
+        <label>Unit:</label>
+        <select id="dimUnit">
+          <option value="px">Pixels (px)</option>
+          <option value="cm">Centimeters (cm)</option>
+          <option value="mm">Millimeters (mm)</option>
+          <option value="in">Inches (in)</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="control-group">
+        <label>Aspect Ratio / Framing:</label>
+        <select id="fitMode">
+          <option value="stretch">Fill / Stretch to Exact Size</option>
+          <option value="contain">Contain (Pad Background, No Distortion)</option>
+          <option value="cover">Cover (Center Crop, No Distortion)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Exact Custom KB Target:</label>
+        <input type="number" id="customKbInput" placeholder="e.g. 45 (Overrides dropdown)">
+      </div>
+      <div class="control-group">
+        <label>Export Format:</label>
+        <select id="formatSelect">
+          <option value="image/jpeg">JPG / JPEG (Best for File Size Limits)</option>
+          <option value="image/png">PNG (Lossless & Transparent)</option>
+          <option value="image/webp">WEBP (Modern High Efficiency)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3 -->
+  <div class="tab-content" id="backgroundTab">
+    <div class="grid-2">
+      <div class="control-group">
+        <label>Background Replacement Mode:</label>
+        <select id="bgMode" onchange="toggleBgColor()">
+          <option value="none">Keep Original Background</option>
+          <option value="transparent">Transparent (PNG Cutout - Removes BG)</option>
+          <option value="#ffffff">Pure White (#FFFFFF - Standard Passport / Govt)</option>
+          <option value="#3b82f6">Passport Light Blue (#3B82F6 - Indian Passport / Visa)</option>
+          <option value="#e2e8f0">Light Neutral Gray (#E2E8F0)</option>
+          <option value="#ef4444">Official Red Background (#EF4444)</option>
+          <option value="custom">Custom Color Palette</option>
+        </select>
+      </div>
+      <div class="control-group" id="customColorGroup" style="display: none;">
+        <label>Pick Custom Color:</label>
+        <input type="color" id="customBgPicker" value="#ffffff" style="height: 40px; width: 60px; cursor: pointer; border-radius: 8px;">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="control-group">
+        <label>Cutout Engine:</label>
+        <select id="bgEngine">
+          <option value="ai">✨ AI Smart Portrait Cutout (MediaPipe)</option>
+          <option value="keyer">🪄 Uniform Wall / Color Keyer (Fast Eraser)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Edge Feathering: <span id="featherVal" style="color: var(--primary);">2px</span></label>
+        <input type="range" id="edgeFeather" min="0" max="8" value="2" oninput="document.getElementById('featherVal').innerText = this.value + 'px'">
+      </div>
+    </div>
+    <div class="tip-box">
+      💡 <strong>Govt Rule:</strong> Passport Seva, UPSC, SSC, NEET, and Visa portals require a <strong>Pure White (#FFFFFF)</strong> or <strong>Light Blue</strong> background without shadows.
+    </div>
+  </div>
+
+  <!-- Tab 4 -->
+  <div class="tab-content" id="stampTab">
+    <div class="grid-2">
+      <div class="control-group">
+        <label>Candidate Name (Name Stamp):</label>
+        <input type="text" id="stampName" placeholder="e.g. RAHUL KUMAR">
+      </div>
+      <div class="control-group">
+        <label>Date Taken (DOP Stamp):</label>
+        <input type="date" id="stampDate">
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="control-group">
+        <label>Name & Date Banner:</label>
+        <select id="enableStamp">
+          <option value="no">No Stamp (Clean Photo)</option>
+          <option value="yes">Add Name & Date Banner at Bottom</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Signature Background Cleaner:</label>
+        <select id="sigCleaner">
+          <option value="off">Off (Original Photo Colors)</option>
+          <option value="on">On (Pure White Background & High Contrast Ink)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Color Tone Filter:</label>
+        <select id="colorFilter">
+          <option value="none">Original Colors</option>
+          <option value="grayscale">Grayscale / Black & White</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 5 -->
+  <div class="tab-content" id="exportTab">
+    <div class="grid-2">
+      <div class="control-group">
+        <label>Output File Name Prefix:</label>
+        <input type="text" id="filePrefix" value="optimized_doc">
+      </div>
+      <div class="control-group">
+        <label>Action Status:</label>
+        <p style="font-size: 12.5px; color: var(--muted); margin-top: 6px;">
+          Review options across tabs, then run batch processing below.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div style="padding: 0 20px 20px 20px;">
+    <div class="btn-bar">
+      <button class="btn-main" onclick="processBatch()">⚡ Compress & Apply Settings</button>
+      <button class="btn-zip" onclick="downloadAllZip()">📦 Download All (.ZIP)</button>
+      <button class="btn-pdf" onclick="generateBatchPDF()">📄 Merge to PDF</button>
+      <button class="btn-reset-opts" onclick="resetAllOptions()">🔄 Reset Options</button>
+      <button class="btn-clear" onclick="clearAllFiles()">🗑️ Clear Queue</button>
+    </div>
+    <div class="status-msg" id="statusMsg" style="display: none;"></div>
+    <div class="file-list" id="fileList"></div>
+  </div>
+
+  <!-- Cusdis Discussion Widget -->
+  <div class="comments-sec">
+    <h2>💬 User Feedback & Discussion</h2>
+    <div id="cusdis_thread"
+      data-host="https://cusdis.com"
+      data-app-id="95a6f235-9dfa-49bb-b14e-b5c6d3fa7bf5"
+      data-page-id="smart_image_studio_pro"
+      data-page-url=""
+      data-page-title="Smart Image Studio Pro"
+    ></div>
+    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+  </div>
+</div>
+
+<!-- Modal for Crop -->
+<div class="modal" id="cropModal">
+  <div class="modal-content">
+    <h3 style="margin: 0 0 10px 0;">✂️ Crop & Adjust Framing</h3>
+    <div class="crop-box">
+      <img id="cropTargetImage" style="max-width: 100%;">
+    </div>
+    <div class="btn-bar">
+      <button class="btn-main" onclick="saveCrop()">Save Crop</button>
+      <button class="btn-clear" onclick="closeCropModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 1. PWA Manifest & Service Worker for Native Browser App Installation
+  (function initPWA() {
+    const manifest = {
+      name: "Smart Image Studio Pro",
+      short_name: "ImageStudio",
+      description: "Govt Exam Presets, AI Background Remover & Batch Photo Resizer",
+      start_url: window.location.href,
+      display: "standalone",
+      background_color: "#0f172a",
+      theme_color: "#6366f1",
+      icons: [{
+        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ccircle cx='50' cy='50' r='24' stroke='white' stroke-width='6' fill='none'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23fcd34d'/%3E%3Cpath d='M24 38 L34 26 H66 L76 38' stroke='white' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E",
+        sizes: "192x192 512x512",
+        type: "image/svg+xml",
+        purpose: "any maskable"
+      }]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+
+    if ('serviceWorker' in navigator) {
+      const sw = `self.addEventListener('install', e=>self.skipWaiting());self.addEventListener('activate', e=>clients.claim());self.addEventListener('fetch', e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;
+      navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type: 'text/javascript'}))).catch(()=>{});
+    }
+  })();
+
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btn = document.getElementById('installAppBtn');
+    if (btn) btn.style.display = 'inline-flex';
+  });
+
+  function triggerAppInstall() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((r) => {
+        if (r.outcome === 'accepted') {
+          const btn = document.getElementById('installAppBtn');
+          if (btn) btn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      });
+    } else {
+      alert('To install this app on PC/Phone:\\n\\n1. Look for the Install Icon (monitor with down arrow) in your browser address bar at the top right.\\n2. Or click the 3 dots browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
+    }
+  }
+
+  let uploadedFiles = [];
+  let fileCounter = 0;
+  let currentCropper = null;
+  let activeCropId = null;
+  let selfieSegmenterInstance = null;
+
+  function getSegmenter() {
+    if (!selfieSegmenterInstance && window.SelfieSegmentation) {
+      selfieSegmenterInstance = new SelfieSegmentation({
+        locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${f}`
+      });
+      selfieSegmenterInstance.setOptions({ modelSelection: 1 });
+    }
+    return selfieSegmenterInstance;
+  }
+
+  function setStatus(msg) {
+    const el = document.getElementById('statusMsg');
+    if (msg) { el.style.display = 'block'; el.innerText = msg; }
+    else { el.style.display = 'none'; }
+  }
+
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleBgColor() {
+    const mode = document.getElementById('bgMode').value;
+    document.getElementById('customColorGroup').style.display = (mode === 'custom') ? 'flex' : 'none';
+  }
+
+  function quickPreset(name) {
+    document.getElementById('examPreset').value = name;
+    applyExamPreset();
+  }
+
+  function quickBg(val) {
+    document.getElementById('bgMode').value = val;
+    toggleBgColor();
+    setStatus(`Background set to: ${val === 'transparent' ? 'Transparent PNG' : val}. Click Compress!`);
+  }
+
+  window.addEventListener("dragover", e => e.preventDefault());
+  window.addEventListener("drop", e => e.preventDefault());
+
+  const dropzone = document.getElementById('dropzone');
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files.length > 0) handleFiles(Array.from(e.dataTransfer.files));
+  });
+
+  document.getElementById('fileInput').addEventListener('change', (e) => {
+    if (e.target.files.length > 0) handleFiles(Array.from(e.target.files));
+  });
+
+  function handleFiles(files) {
+    files.forEach((file) => {
+      if (!file.type.startsWith('image/')) return;
+      fileCounter++;
+      const currentId = fileCounter;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          uploadedFiles.push({
+            id: currentId,
+            file: file,
+            img: img,
+            name: file.name,
+            originalSize: file.size,
+            src: event.target.result,
+            processedBlob: null,
+            downloadUrl: null
+          });
+          renderInitialCard(file, event.target.result, currentId);
+          setStatus(`Total ${uploadedFiles.length} file(s) in queue. Choose settings and click Compress.`);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('fileInput').value = '';
+  }
+
+  function renderInitialCard(file, src, id) {
+    const list = document.getElementById('fileList');
+    const card = document.createElement('div');
+    card.className = 'file-card';
+    card.id = `card-${id}`;
+
+    card.innerHTML = `
+      <div class="file-info">
+        <img src="${src}" class="file-thumb" id="thumb-${id}">
+        <div class="file-details">
+          <span class="file-name">${file.name}</span>
+          <span class="file-meta">Original: ${formatBytes(file.size)}</span>
+        </div>
+      </div>
+      <div class="action-btns">
+        <button class="btn-sm btn-clear" onclick="openCropModal(${id})">✂️ Crop</button>
+        <span class="badge" style="background:#fef3c7; color:#92400e;">Ready</span>
+      </div>
+    `;
+    list.appendChild(card);
+  }
+
+  function resetAllOptions() {
+    document.getElementById('examPreset').value = 'custom';
+    document.getElementById('sizeTarget').value = '200';
+    document.getElementById('customWidth').value = '';
+    document.getElementById('customHeight').value = '';
+    document.getElementById('dimUnit').value = 'px';
+    document.getElementById('fitMode').value = 'stretch';
+    document.getElementById('customKbInput').value = '';
+    document.getElementById('formatSelect').value = 'image/jpeg';
+    document.getElementById('bgMode').value = 'none';
+    document.getElementById('customBgPicker').value = '#ffffff';
+    document.getElementById('customColorGroup').style.display = 'none';
+    document.getElementById('bgEngine').value = 'ai';
+    document.getElementById('edgeFeather').value = '2';
+    document.getElementById('featherVal').innerText = '2px';
+    document.getElementById('stampName').value = '';
+    document.getElementById('stampDate').value = '';
+    document.getElementById('enableStamp').value = 'no';
+    document.getElementById('sigCleaner').value = 'off';
+    document.getElementById('colorFilter').value = 'none';
+    document.getElementById('filePrefix').value = 'optimized_doc';
+
+    setStatus('🔄 All options reset to default values.');
+  }
+
+  function clearAllFiles() {
+    uploadedFiles.forEach(f => { if (f.downloadUrl) URL.revokeObjectURL(f.downloadUrl); });
+    uploadedFiles = [];
+    document.getElementById('fileList').innerHTML = '';
+    setStatus('Queue cleared.');
+  }
+
+  function formatBytes(bytes) {
+    if (!bytes || bytes === 0) return '0 Bytes';
+    if (bytes < 1024) return bytes + ' Bytes';
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / 1048576).toFixed(2) + ' MB';
+  }
+
+  function applyExamPreset() {
+    const preset = document.getElementById('examPreset').value;
+    const targetSelect = document.getElementById('sizeTarget');
+    const customW = document.getElementById('customWidth');
+    const customH = document.getElementById('customHeight');
+    const unit = document.getElementById('dimUnit');
+    const format = document.getElementById('formatSelect');
+    const sigCleaner = document.getElementById('sigCleaner');
+    const fitMode = document.getElementById('fitMode');
+    const bgMode = document.getElementById('bgMode');
+
+    if (preset === 'upsc_photo') {
+      targetSelect.value = "300"; customW.value = "350"; customH.value = "450"; unit.value = "px";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ssc_photo') {
+      targetSelect.value = "50"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ssc_sig') {
+      targetSelect.value = "20"; customW.value = "4.0"; customH.value = "2.0"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "on"; fitMode.value = "contain"; bgMode.value = "#ffffff";
+    } else if (preset === 'passport') {
+      targetSelect.value = "50"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'neet_photo') {
+      targetSelect.value = "200"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'gate_photo') {
+      targetSelect.value = "200"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ibps_photo') {
+      targetSelect.value = "50"; customW.value = "200"; customH.value = "230"; unit.value = "px";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ibps_sig') {
+      targetSelect.value = "20"; customW.value = "140"; customH.value = "60"; unit.value = "px";
+      format.value = "image/jpeg"; sigCleaner.value = "on"; fitMode.value = "contain"; bgMode.value = "none";
+    }
+    toggleBgColor();
+    setStatus(`Applied preset: ${preset.toUpperCase()}. Click Compress to run!`);
+  }
+
+  function openCropModal(id) {
+    activeCropId = id;
+    const item = uploadedFiles.find(f => f.id === id);
+    if (!item) return;
+
+    const modal = document.getElementById('cropModal');
+    const img = document.getElementById('cropTargetImage');
+    img.src = item.src;
+    modal.style.display = 'flex';
+
+    if (currentCropper) currentCropper.destroy();
+    currentCropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1 });
+  }
+
+  function closeCropModal() {
+    document.getElementById('cropModal').style.display = 'none';
+    if (currentCropper) { currentCropper.destroy(); currentCropper = null; }
+  }
+
+  function saveCrop() {
+    if (!currentCropper) return;
+    const croppedCanvas = currentCropper.getCroppedCanvas();
+    const croppedSrc = croppedCanvas.toDataURL('image/jpeg', 0.95);
+
+    const item = uploadedFiles.find(f => f.id === activeCropId);
+    if (item) {
+      item.src = croppedSrc;
+      const newImg = new Image();
+      newImg.onload = () => {
+        item.img = newImg;
+        const thumb = document.getElementById(`thumb-${item.id}`);
+        if (thumb) thumb.src = croppedSrc;
+      };
+      newImg.src = croppedSrc;
+    }
+    closeCropModal();
+  }
+
+  function formatDateStamp(dateStr) {
+    if (!dateStr) {
+      const d = new Date();
+      const day = String(d.getDate()).padStart(2, '0');
+      const mon = String(d.getMonth() + 1).padStart(2, '0');
+      return `${day}-${mon}-${d.getFullYear()}`;
+    }
+    const parts = dateStr.split('-');
+    return parts.length === 3 ? `${parts}-${parts}-${parts[0]}` : dateStr;
+  }
+
+  async function getAIMask(imageElem) {
+    return new Promise((resolve) => {
+      try {
+        const seg = getSegmenter();
+        if (!seg) return resolve(null);
+        seg.onResults((r) => resolve(r.segmentationMask || null));
+        seg.send({ image: imageElem }).catch(() => resolve(null));
+      } catch (err) { resolve(null); }
+    });
+  }
+
+  function applyColorKeying(ctx, width, height, targetHex) {
+    const imgData = ctx.getImageData(0, 0, width, height);
+    const d = imgData.data;
+    const corners = [0, (width - 1) * 4, (height - 1) * width * 4, ((height - 1) * width + (width - 1)) * 4];
+    let bgR = 0, bgG = 0, bgB = 0;
+    corners.forEach(i => { bgR += d[i]; bgG += d[i+1]; bgB += d[i+2]; });
+    bgR /= 4; bgG /= 4; bgB /= 4;
+
+    const isTrans = targetHex === 'transparent';
+    const c = targetHex.replace('#', '');
+    const [tR, tG, tB] = !isTrans ? [parseInt(c.substr(0,2),16), parseInt(c.substr(2,2),16), parseInt(c.substr(4,2),16)] : [255,255,255];
+
+    for (let i = 0; i < d.length; i += 4) {
+      let dist = Math.sqrt((d[i]-bgR)**2 + (d[i+1]-bgG)**2 + (d[i+2]-bgB)**2);
+      if (dist < 45) {
+        if (isTrans) d[i+3] = 0;
+        else { d[i] = tR; d[i+1] = tG; d[i+2] = tB; }
+      } else if (dist < 60) {
+        let f = (dist - 45) / 15;
+        if (isTrans) d[i+3] = Math.round(255 * f);
+        else {
+          d[i] = Math.round(d[i]*f + tR*(1-f));
+          d[i+1] = Math.round(d[i]*f + tG*(1-f));
+          d[i+2] = Math.round(d[i]*f + tB*(1-f));
+        }
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
+  }
+
+  async function compressToTarget(imgItem, targetKB, mimeType) {
+    return new Promise(async (resolve) => {
+      let targetBytes = targetKB * 1024;
+      const customKb = parseInt(document.getElementById('customKbInput').value);
+      if (!isNaN(customKb) && customKb > 0) targetBytes = customKb * 1024;
+
+      let reqW = parseFloat(document.getElementById('customWidth').value);
+      let reqH = parseFloat(document.getElementById('customHeight').value);
+      const unit = document.getElementById('dimUnit').value;
+      const fitMode = document.getElementById('fitMode').value;
+      const bgMode = document.getElementById('bgMode').value;
+      const bgEngine = document.getElementById('bgEngine').value;
+      const customBg = document.getElementById('customBgPicker').value;
+      const feather = parseInt(document.getElementById('edgeFeather').value) || 2;
+
+      let baseW = imgItem.img.width || 800;
+      let baseH = imgItem.img.height || 600;
+
+      if (!isNaN(reqW) && reqW > 0 && !isNaN(reqH) && reqH > 0) {
+        if (unit === 'cm') { baseW = Math.round(reqW * 118.11); baseH = Math.round(reqH * 118.11); }
+        else if (unit === 'mm') { baseW = Math.round(reqW * 11.811); baseH = Math.round(reqH * 11.811); }
+        else if (unit === 'in') { baseW = Math.round(reqW * 300); baseH = Math.round(reqH * 300); }
+        else { baseW = Math.round(reqW); baseH = Math.round(reqH); }
+      }
+
+      let aiMask = null;
+      if (bgMode !== 'none' && bgEngine === 'ai') {
+        aiMask = await getAIMask(imgItem.img);
+      }
+
+      function getBlob(w, h, quality) {
+        return new Promise((res) => {
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(10, Math.round(w));
+          canvas.height = Math.max(10, Math.round(h));
+          const ctx = canvas.getContext('2d');
+
+          const targetBg = bgMode === 'custom' ? customBg : bgMode;
+
+          if (targetBg !== 'transparent' && targetBg !== 'none') {
+            ctx.fillStyle = targetBg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          } else if (targetBg === 'none' && mimeType !== 'image/png') {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+
+          const origW = imgItem.img.width;
+          const origH = imgItem.img.height;
+
+          if (bgMode !== 'none' && aiMask) {
+            const pCanvas = document.createElement('canvas');
+            pCanvas.width = canvas.width;
+            pCanvas.height = canvas.height;
+            const pCtx = pCanvas.getContext('2d');
+
+            if (fitMode === 'cover') {
+              const r = Math.max(canvas.width / origW, canvas.height / origH);
+              const sW = canvas.width / r, sH = canvas.height / r;
+              pCtx.drawImage(imgItem.img, (origW - sW)/2, (origH - sH)/2, sW, sH, 0, 0, canvas.width, canvas.height);
+            } else {
+              pCtx.drawImage(imgItem.img, 0, 0, canvas.width, canvas.height);
+            }
+
+            pCtx.globalCompositeOperation = 'destination-in';
+            if (feather > 0) pCtx.filter = `blur(${feather}px)`;
+            pCtx.drawImage(aiMask, 0, 0, canvas.width, canvas.height);
+            pCtx.filter = 'none';
+            pCtx.globalCompositeOperation = 'source-over';
+
+            ctx.drawImage(pCanvas, 0, 0);
+          } else {
+            if (fitMode === 'contain') {
+              const ratio = Math.min(canvas.width / origW, canvas.height / origH);
+              const sX = (canvas.width - origW * ratio) / 2;
+              const sY = (canvas.height - origH * ratio) / 2;
+              ctx.drawImage(imgItem.img, 0, 0, origW, origH, sX, sY, origW * ratio, origH * ratio);
+            } else if (fitMode === 'cover') {
+              const ratio = Math.max(canvas.width / origW, canvas.height / origH);
+              const sW = canvas.width / ratio, sH = canvas.height / ratio;
+              ctx.drawImage(imgItem.img, (origW - sW)/2, (origH - sH)/2, sW, sH, 0, 0, canvas.width, canvas.height);
+            } else {
+              ctx.drawImage(imgItem.img, 0, 0, canvas.width, canvas.height);
+            }
+
+            if (bgMode !== 'none' && !aiMask) {
+              applyColorKeying(ctx, canvas.width, canvas.height, targetBg);
+            }
+          }
+
+          if (document.getElementById('sigCleaner').value === 'on') {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const d = imgData.data;
+            for (let i = 0; i < d.length; i += 4) {
+              let lum = d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114;
+              if (lum > 145) { d[i] = 255; d[i+1] = 255; d[i+2] = 255; }
+              else {
+                let f = lum < 80 ? 0.3 : 0.6;
+                d[i] = Math.round(d[i]*f); d[i+1] = Math.round(d[i+1]*f); d[i+2] = Math.round(d[i+2]*f);
+              }
+            }
+            ctx.putImageData(imgData, 0, 0);
+          }
+
+          if (document.getElementById('colorFilter').value === 'grayscale') {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const d = imgData.data;
+            for (let i = 0; i < d.length; i += 4) {
+              let avg = Math.round(d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
+              d[i] = avg; d[i+1] = avg; d[i+2] = avg;
+            }
+            ctx.putImageData(imgData, 0, 0);
+          }
+
+          if (document.getElementById('enableStamp').value === 'yes') {
+            const stampName = document.getElementById('stampName').value.trim() || 'CANDIDATE NAME';
+            const stampDate = formatDateStamp(document.getElementById('stampDate').value);
+            const bH = Math.max(30, canvas.height * 0.22);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, canvas.height - bH, canvas.width, bH);
+            ctx.strokeStyle = '#CBD5E1';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height - bH);
+            ctx.lineTo(canvas.width, canvas.height - bH);
+            ctx.stroke();
+
+            ctx.fillStyle = '#000000';
+            ctx.font = `bold ${Math.round(bH * 0.34)}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(stampName.toUpperCase(), canvas.width / 2, canvas.height - (bH * 0.65));
+            ctx.font = `600 ${Math.round(bH * 0.26)}px sans-serif`;
+            ctx.fillText(`DOP: ${stampDate}`, canvas.width / 2, canvas.height - (bH * 0.25));
+          }
+
+          const outMime = (bgMode === 'transparent') ? 'image/png' : mimeType;
+          canvas.toBlob((b) => res(b), outMime, quality);
+        });
+      }
+
+      async function run() {
+        let curW = baseW, curH = baseH;
+
+        if (targetBytes === 0) {
+          let b = await getBlob(curW, curH, 0.95);
+          resolve(b);
+          return;
+        }
+
+        if (mimeType === 'image/png' || bgMode === 'transparent') {
+          let b = await getBlob(curW, curH, 1.0);
+          while (b.size > targetBytes && curW > 120) {
+            curW *= 0.85; curH *= 0.85;
+            b = await getBlob(curW, curH, 1.0);
+          }
+          resolve(b);
+          return;
+        }
+
+        let minQ = 0.05, maxQ = 0.98, bestBlob = null;
+        for (let i = 0; i < 9; i++) {
+          let midQ = (minQ + maxQ) / 2;
+          let testBlob = await getBlob(curW, curH, midQ);
+          if (testBlob.size <= targetBytes) { bestBlob = testBlob; minQ = midQ; }
+          else { maxQ = midQ; }
+        }
+
+        if (!bestBlob || bestBlob.size > targetBytes) {
+          let scaleQ = 0.65;
+          while (curW > 100) {
+            curW *= 0.85; curH *= 0.85;
+            let sBlob = await getBlob(curW, curH, scaleQ);
+            if (sBlob.size <= targetBytes) { bestBlob = sBlob; break; }
+            if (scaleQ > 0.3) scaleQ -= 0.1;
+          }
+          if (!bestBlob) bestBlob = await getBlob(curW, curH, 0.30);
+        }
+        resolve(bestBlob);
+      }
+      run();
+    });
+  }
+
+  async function processBatch() {
+    if (uploadedFiles.length === 0) {
+      alert('Please upload photos first!');
+      return;
+    }
+
+    const targetKB = parseInt(document.getElementById('sizeTarget').value);
+    const mimeType = document.getElementById('formatSelect').value;
+    const prefix = document.getElementById('filePrefix').value.trim() || 'doc';
+    const bgMode = document.getElementById('bgMode').value;
+    const ext = (bgMode === 'transparent' || mimeType === 'image/png') ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
+
+    setStatus('⏳ Processing photos with AI background studio & smart compression...');
+
+    for (let item of uploadedFiles) {
+      const blob = await compressToTarget(item, targetKB, mimeType);
+      item.processedBlob = blob;
+      if (item.downloadUrl) URL.revokeObjectURL(item.downloadUrl);
+      const downloadUrl = URL.createObjectURL(blob);
+      item.downloadUrl = downloadUrl;
+
+      const card = document.getElementById(`card-${item.id}`);
+      if (!card) continue;
+
+      const savings = Math.round(((item.originalSize - blob.size) / item.originalSize) * 100);
+
+      card.innerHTML = `
+        <div class="file-info">
+          <img src="${downloadUrl}" class="file-thumb" id="thumb-${item.id}">
+          <div class="file-details">
+            <span class="file-name">${item.name}</span>
+            <span class="file-meta">Original: ${formatBytes(item.originalSize)} ➔ <strong>Target: ${formatBytes(blob.size)}</strong></span>
+          </div>
+        </div>
+        <div class="action-btns">
+          <span class="badge badge-ok">${savings > 0 ? '-' + savings + '%' : savings === 0 ? 'Exact' : '+' + Math.abs(savings) + '%'}</span>
+          <button class="btn-sm btn-clear" onclick="openCropModal(${item.id})">✂️ Crop</button>
+          <button class="btn-sm btn-copy" onclick="copyToClipboard(${item.id})">📋 Copy</button>
+          <a href="${downloadUrl}" download="${prefix}_${item.id}.${ext}" class="btn-sm btn-dl">Download</a>
+        </div>
+      `;
+    }
+    setStatus('✅ Processing complete! Download individual files or export bundle below.');
+  }
+
+  async function downloadAllZip() {
+    if (uploadedFiles.length === 0 || !uploadedFiles.some(f => f.processedBlob)) {
+      alert('Please click "Compress & Apply Settings" first before downloading as ZIP!');
+      return;
+    }
+
+    const zip = new JSZip();
+    const prefix = document.getElementById('filePrefix').value.trim() || 'doc';
+    const mimeType = document.getElementById('formatSelect').value;
+    const bgMode = document.getElementById('bgMode').value;
+    const ext = (bgMode === 'transparent' || mimeType === 'image/png') ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
+
+    uploadedFiles.forEach((item, idx) => {
+      if (item.processedBlob) {
+        zip.file(`${prefix}_${idx + 1}.${ext}`, item.processedBlob);
+      }
+    });
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(zipBlob);
+    link.download = `${prefix}_batch_bundle.zip`;
+    link.click();
+  }
+
+  async function copyToClipboard(id) {
+    const item = uploadedFiles.find(f => f.id === id);
+    if (!item || !item.processedBlob) return alert('Compress the image first.');
+
+    try {
+      let pngBlob = item.processedBlob;
+      if (item.processedBlob.type !== 'image/png') {
+        const img = new Image();
+        await new Promise((res) => {
+          img.onload = res;
+          img.src = item.downloadUrl || URL.createObjectURL(item.processedBlob);
+        });
+        const c = document.createElement('canvas');
+        c.width = img.width; c.height = img.height;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        pngBlob = await new Promise(res => c.toBlob(res, 'image/png'));
+      }
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+      alert('✅ Image copied to clipboard as PNG!');
+    } catch (err) {
+      alert('Direct clipboard copy is not supported in this browser context.');
+    }
+  }
+
+  async function generateBatchPDF() {
+    if (uploadedFiles.length === 0) return alert('Upload photos first!');
+    const { jsPDF } = window.jspdf;
+    let pdf = null;
+    const prefix = document.getElementById('filePrefix').value.trim() || 'documents';
+
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      const item = uploadedFiles[i];
+      let imgData = item.src;
+      if (item.processedBlob) {
+        imgData = await new Promise((res) => {
+          const r = new FileReader();
+          r.onload = () => res(r.result);
+          r.readAsDataURL(item.processedBlob);
+        });
+      }
+
+      const tempImg = new Image();
+      await new Promise((res) => { tempImg.onload = res; tempImg.src = imgData; });
+
+      const w = tempImg.width || 800;
+      const h = tempImg.height || 600;
+      const isL = w > h;
+
+      if (i === 0) {
+        pdf = new jsPDF({ orientation: isL ? 'landscape' : 'portrait', unit: 'px', format: [w, h] });
+      } else {
+        pdf.addPage([w, h], isL ? 'landscape' : 'portrait');
+      }
+      pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
+    }
+    pdf.save(`${prefix}_merged.pdf`);
+  }
+</script>
+</body>
+</html>
