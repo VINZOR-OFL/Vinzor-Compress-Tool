@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- PWA Manifest & Theme -->
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#2563eb">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Image Studio Pro - Student & Govt Form Suite</title>
 
-  <!-- Social Media Previews -->
-  <meta property="og:title" content="Vinzor Compress Tool - Free Govt Exam Photo Resizer">
-  <meta property="og:description" content="Compress passport photos, clean signatures, add name stamps...">
-  <meta property="og:image" content="https://vinzor-of1.github.io/Vinzor-Compress-Tool/channels4_profile.jpg">
-  <meta property="og:url" content="https://vinzor-of1.github.io/Vinzor-Compress-Tool/">
-  <meta property="og:type" content="website">
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+
     <!-- Social Media Sharing Link Previews (Open Graph) -->
     <meta property="og:title" content="Vinzor Compress Tool - Free Govt Exam Photo Resizer">
     <meta property="og:description" content="Compress passport photos, clean signatures, add name stamps, and resize images for UPSC, SSC, NEET & Govt forms. 100% free and private.">
     <meta property="og:image" content="https://vinzor-ofl.github.io/Vinzor-Compress-Tool/channels4_profile.jpg">
     <meta property="og:url" content="https://vinzor-ofl.github.io/Vinzor-Compress-Tool/">
     <meta property="og:type" content="website">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Image Studio Pro - Student & Govt Form Suite</title>
-    
+
+    <!-- Tool Utility Logo for Browser Tabs (Favicon) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='5' y='5' width='90' height='90' rx='22' fill='%236366f1'/><rect x='22' y='22' width='56' height='56' rx='8' fill='none' stroke='%23ffffff' stroke-width='6'/><circle cx='38' cy='38' r='5' fill='%23ffffff'/><path d='M22 62 L38 46 L52 60 L62 50 L78 66 L78 70 L22 70 Z' fill='%23ffffff'/><path d='M10 25 L25 25 L25 10 M25 25 L10 10' stroke='%23facc15' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' fill='none'/><path d='M90 75 L75 75 L75 90 M75 75 L90 90' stroke='%23facc15' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+
     <!-- External Free CDNs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- Tool Utility Logo for Browser Tabs (Favicon) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='5' y='5' width='90' height='90' rx='22' fill='%236366f1'/><rect x='22' y='22' width='56' height='56' rx='8' fill='none' stroke='%23ffffff' stroke-width='6'/><circle cx='38' cy='38' r='5' fill='%23ffffff'/><path d='M22 62 L38 46 L52 60 L62 50 L78 66 L78 70 L22 70 Z' fill='%23ffffff'/><path d='M10 25 L25 25 L25 10 M25 25 L10 10' stroke='%23facc15' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' fill='none'/><path d='M90 75 L75 75 L75 90 M75 75 L90 90' stroke='%23facc15' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 
     <style>
         :root {
@@ -63,13 +60,11 @@
         }
 
         .header {
-            <button class="install-pwa-btn" style="display: none;">
-              📲 Install App
-            </button>
             background: linear-gradient(135deg, #4f46e5, #9333ea);
             padding: 25px 30px;
             color: white;
             text-align: center;
+            position: relative;
         }
 
         .header h1 {
@@ -82,6 +77,29 @@
             margin: 6px 0 0;
             font-size: 14px;
             opacity: 0.9;
+        }
+
+        .btn-install {
+            margin-top: 14px;
+            background: #facc15;
+            color: #0f172a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-install:hover {
+            background: #fde047;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
 
         /* Creator Profile Banner */
@@ -353,10 +371,9 @@
 
 <div class="app-container">
     <!-- Main Header -->
-    <!-- Main Header with Custom Tool Vector Logo -->
     <div class="header">
         <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;">
-        <!-- Utility Logo (Photo Canvas + Compression Arrows) -->
+            <!-- Utility Logo -->
             <svg width="48" height="48" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.4));">
                 <rect x="5" y="5" width="90" height="90" rx="22" fill="#6366f1"/>
                 <rect x="22" y="22" width="56" height="56" rx="8" fill="none" stroke="#ffffff" stroke-width="6"/>
@@ -368,6 +385,11 @@
             <h1 style="margin: 0;">Smart Image Studio Pro</h1>
         </div>
         <p>All-in-One Govt Exam Presets, Custom Resizer, Passport Tools & Multi-File Compressor</p>
+        
+        <!-- PWA Install Button -->
+        <button id="installBtn" class="btn-install" style="display: none;">
+            📲 Install Web App
+        </button>
     </div>
 
     <!-- Creator Banner -->
@@ -548,7 +570,8 @@
         <!-- File Queue List -->
         <div class="file-list" id="fileList"></div>
     </div>
-   <!-- Anonymous User Feedback & Comment Section -->
+
+    <!-- Anonymous User Feedback & Comment Section -->
     <div style="margin: 30px 25px 20px 25px; background: #ffffff; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
         <h2 style="margin: 0 0 6px 0; font-size: 20px; color: #1e293b; display: flex; align-items: center; gap: 8px;">
             💬 Anonymous Feedback & Bug Reports
@@ -567,6 +590,7 @@
         </div>
         <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
     </div>
+
     <!-- Creator Footer -->
     <div class="creator-footer">
         Created with ❤️ by <strong>Vinzor Gaming</strong> | Check out our <a href="https://www.youtube.com/channel/UCotcUt8NMCHFjfeDc646Tsg" target="_blank" style="color: #6366f1; font-weight: bold;">YouTube Channel</a> & <a href="https://www.instagram.com/vinzorgaming/" target="_blank" style="color: #dc2743; font-weight: bold;">Instagram Page</a>
@@ -587,6 +611,7 @@
     </div>
 </div>
 
+<!-- Main App Scripts -->
 <script>
     let uploadedFiles = [];
     let fileCounter = 0;
@@ -984,37 +1009,41 @@
         pdf.save('merged_documents.pdf');
     }
 </script>
+
+<!-- PWA Service Worker & Install Handler -->
 <script>
-    // Register Service Worker
+    // 1. Register Service Worker
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Service Worker Registered:', reg.scope))
-          .catch(err => console.error('Service Worker Error:', err));
-      });
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker Registered:', reg.scope))
+                .catch(err => console.error('Service Worker Error:', err));
+        });
     }
 
-    // Install Button Trigger
+    // 2. Install Button Trigger Logic
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'inline-block'; // Shows your header button
+        e.preventDefault();
+        deferredPrompt = e;
+        if (installBtn) {
+            installBtn.style.display = 'inline-flex';
+        }
     });
 
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log(`Install prompt outcome: ${outcome}`);
-        deferredPrompt = null;
-        installBtn.style.display = 'none';
-      }
-    });
-  </script>
-</body>
-</html>
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Install prompt outcome: ${outcome}`);
+                deferredPrompt = null;
+                installBtn.style.display = 'none';
+            }
+        });
+    }
+</script>
 </body>
 </html>
