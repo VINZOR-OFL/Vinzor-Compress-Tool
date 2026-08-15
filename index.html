@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- PWA Manifest & Theme -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Social Media Previews -->
+  <meta property="og:title" content="Vinzor Compress Tool - Free Govt Exam Photo Resizer">
+  <meta property="og:description" content="Compress passport photos, clean signatures, add name stamps...">
+  <meta property="og:image" content="https://vinzor-of1.github.io/Vinzor-Compress-Tool/channels4_profile.jpg">
+  <meta property="og:url" content="https://vinzor-of1.github.io/Vinzor-Compress-Tool/">
+  <meta property="og:type" content="website">
     <!-- Social Media Sharing Link Previews (Open Graph) -->
     <meta property="og:title" content="Vinzor Compress Tool - Free Govt Exam Photo Resizer">
     <meta property="og:description" content="Compress passport photos, clean signatures, add name stamps, and resize images for UPSC, SSC, NEET & Govt forms. 100% free and private.">
@@ -53,6 +63,9 @@
         }
 
         .header {
+            <button class="install-pwa-btn" style="display: none;">
+              📲 Install App
+            </button>
             background: linear-gradient(135deg, #4f46e5, #9333ea);
             padding: 25px 30px;
             color: white;
@@ -655,7 +668,7 @@
         `;
         fileListContainer.appendChild(card);
     }
-
+    
     // Reset Options Button
     function resetAllOptions() {
         document.getElementById('examPreset').value = 'custom';
@@ -971,6 +984,37 @@
         pdf.save('merged_documents.pdf');
     }
 </script>
+<script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker Registered:', reg.scope))
+          .catch(err => console.error('Service Worker Error:', err));
+      });
+    }
 
+    // Install Button Trigger
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block'; // Shows your header button
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`Install prompt outcome: ${outcome}`);
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
 </body>
 </html>
