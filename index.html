@@ -198,6 +198,15 @@
       outline: none;
     }
     select:focus, input:focus { border-color: var(--primary); }
+    .tip-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      color: #475569;
+    }
     .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
     button {
       padding: 11px 15px;
@@ -444,6 +453,9 @@
         <input type="range" id="edgeFeather" min="0" max="8" value="2" oninput="document.getElementById('featherVal').innerText = this.value + 'px'">
       </div>
     </div>
+    <div class="tip-box">
+      💡 <strong>Govt Rule:</strong> Passport Seva, UPSC, SSC, NEET, and Visa portals require a <strong>Pure White (#FFFFFF)</strong> or <strong>Light Blue</strong> background without shadows.
+    </div>
   </div>
 
   <!-- Tab 4 -->
@@ -552,7 +564,7 @@
 </div>
 
 <script>
-  // PWA Manifest & Service Worker
+  // 1. Safe PWA Manifest & Service Worker
   (function initPWA() {
     try {
       const manifest = {
@@ -602,7 +614,7 @@
         deferredPrompt = null;
       });
     } else {
-      alert('To install this app on PC/Phone:\\n\\n1. Look for the Install Icon in the browser address bar (top right).\\n2. Or open browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
+      alert('To install this app on PC/Phone:\\n\\n1. Look for the Install Icon in the browser address bar (top right).\\n2. Or click the browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
     }
   }
 
@@ -851,22 +863,27 @@
     closeCropModal();
   }
 
+  // FIXED: Accurate DD-MM-YYYY Date formatting with prefix support
   function formatDateStamp(dateStr, prefix = "DOP: ") {
     let formattedDate = "";
     if (!dateStr) {
       const d = new Date();
       const day = String(d.getDate()).padStart(2, '0');
       const mon = String(d.getMonth() + 1).padStart(2, '0');
-      formattedDate = `${day}-${mon}-${d.getFullYear()}`;
+      const yr = d.getFullYear();
+      formattedDate = day + "-" + mon + "-" + yr;
     } else {
       const parts = dateStr.split('-');
       if (parts.length === 3) {
-        formattedDate = `${parts}-${parts}-${parts[0]}`;
+        const yr = parts[0];
+        const mon = parts;
+        const day = parts;
+        formattedDate = day + "-" + mon + "-" + yr;
       } else {
         formattedDate = dateStr;
       }
     }
-    return `${prefix}${formattedDate}`;
+    return prefix + formattedDate;
   }
 
   function drawFittedText(ctx, text, x, y, maxFontSize, maxWidth, isBold = false) {
@@ -914,8 +931,8 @@
         if (isTrans) d[i+3] = Math.round(255 * f);
         else {
           d[i] = Math.round(d[i]*f + tR*(1-f));
-          d[i+1] = Math.round(d[i]*f + tG*(1-f));
-          d[i+2] = Math.round(d[i]*f + tB*(1-f));
+          d[i+1] = Math.round(d[i+1]*f + tG*(1-f));
+          d[i+2] = Math.round(d[i+2]*f + tB*(1-f));
         }
       }
     }
