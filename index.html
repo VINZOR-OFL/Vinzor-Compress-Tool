@@ -337,3 +337,933 @@
     <button class="tab-btn" onclick="switchTab('stampTab', this)">✒️ 4. Stamps & Signature</button>
     <button class="tab-btn" onclick="switchTab('exportTab', this)">⚙️ 5. Naming & Export</button>
   </div>
+
+  <!-- Tab 1 -->
+  <div class="tab-content active" id="uploadTab">
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+      <div class="drop-icon">📸</div>
+      <strong style="color: #6b21a8; font-size: 15px;">Click or Drag & Drop Photos Here</strong>
+      <p style="margin: 3px 0 0; font-size: 11.5px; color: #7e22ce;">Supports JPG, PNG, WEBP (Batch upload supported)</p>
+      <input type="file" id="fileInput" accept="image/*" multiple>
+    </div>
+
+    <div class="grid-2" style="margin-top: 16px;">
+      <div class="control-group">
+        <label>Govt Exam & Portal Presets:</label>
+        <select id="examPreset" onchange="applyExamPreset()">
+          <option value="custom">Custom Settings (Manual Mode)</option>
+          <option value="upsc_photo">UPSC Civil Services Photo (20-300 KB | 350x450 px | White BG)</option>
+          <option value="ssc_photo">SSC CGL / CHSL Photo (20-50 KB | 3.5cm x 4.5cm | Light BG)</option>
+          <option value="ssc_sig">SSC Signature (10-20 KB | 4.0cm x 2.0cm | White BG)</option>
+          <option value="passport">Passport Seva Official (20-50 KB | 3.5cm x 4.5cm | White/Blue BG)</option>
+          <option value="neet_photo">NEET NTA Passport (10-200 KB | 3.5cm x 4.5cm | White BG)</option>
+          <option value="gate_photo">GATE / IIT Photo (5-200 KB | 3.5cm x 4.5cm | White BG)</option>
+          <option value="ibps_photo">IBPS / SBI Banking Photo (20-50 KB | 200x230 px | White BG)</option>
+          <option value="ibps_sig">IBPS / SBI Signature (10-20 KB | 140x60 px | White BG)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>File Size Limit Target:</label>
+        <select id="sizeTarget">
+          <option value="0">Original Size (No KB Limit)</option>
+          <option value="20">Under 20 KB (Signatures / SSC / IBPS)</option>
+          <option value="50">Under 50 KB (SSC / Passport / IBPS)</option>
+          <option value="100">Under 100 KB (Govt Portals / State Forms)</option>
+          <option value="200" selected>Under 200 KB (Govt Forms / NEET)</option>
+          <option value="300">Under 300 KB (UPSC Online)</option>
+          <option value="500">Under 500 KB (College Applications)</option>
+          <option value="1024">Under 1 MB</option>
+          <option value="4096">Under 4 MB</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2 -->
+  <div class="tab-content" id="dimensionsTab">
+    <div class="grid-3">
+      <div class="control-group">
+        <label>Width:</label>
+        <input type="number" id="customWidth" placeholder="e.g. 350">
+      </div>
+      <div class="control-group">
+        <label>Height:</label>
+        <input type="number" id="customHeight" placeholder="e.g. 450">
+      </div>
+      <div class="control-group">
+        <label>Unit:</label>
+        <select id="dimUnit">
+          <option value="px">Pixels (px)</option>
+          <option value="cm">Centimeters (cm)</option>
+          <option value="mm">Millimeters (mm)</option>
+          <option value="in">Inches (in)</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="control-group">
+        <label>Aspect Ratio / Framing:</label>
+        <select id="fitMode">
+          <option value="stretch">Fill / Stretch to Exact Size</option>
+          <option value="contain">Contain (Pad Background, No Distortion)</option>
+          <option value="cover">Cover (Center Crop, No Distortion)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Exact Custom KB Target:</label>
+        <input type="number" id="customKbInput" placeholder="e.g. 45 (Overrides dropdown)">
+      </div>
+      <div class="control-group">
+        <label>Export Format:</label>
+        <select id="formatSelect">
+          <option value="image/jpeg">JPG / JPEG (Best for File Size Limits)</option>
+          <option value="image/png">PNG (Lossless & Transparent)</option>
+          <option value="image/webp">WEBP (Modern High Efficiency)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3 -->
+  <div class="tab-content" id="backgroundTab">
+    <div class="grid-2">
+      <div class="control-group">
+        <label>Background Replacement Mode:</label>
+        <select id="bgMode" onchange="toggleBgColor()">
+          <option value="none">Keep Original Background</option>
+          <option value="transparent">Transparent (PNG Cutout - Removes BG)</option>
+          <option value="#ffffff">Pure White (#FFFFFF - Standard Passport / Govt)</option>
+          <option value="#3b82f6">Passport Light Blue (#3B82F6 - Indian Passport / Visa)</option>
+          <option value="#e2e8f0">Light Neutral Gray (#E2E8F0)</option>
+          <option value="#ef4444">Official Red Background (#EF4444)</option>
+          <option value="custom">Custom Color Palette</option>
+        </select>
+      </div>
+      <div class="control-group" id="customColorGroup" style="display: none;">
+        <label>Pick Custom Color:</label>
+        <input type="color" id="customBgPicker" value="#ffffff" style="height: 40px; width: 60px; cursor: pointer; border-radius: 8px;">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="control-group">
+        <label>Cutout Engine:</label>
+        <select id="bgEngine">
+          <option value="ai">✨ AI Smart Portrait Cutout (MediaPipe)</option>
+          <option value="keyer">🪄 Uniform Wall / Color Keyer (Fast Eraser)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Edge Feathering: <span id="featherVal" style="color: var(--primary);">2px</span></label>
+        <input type="range" id="edgeFeather" min="0" max="8" value="2" oninput="document.getElementById('featherVal').innerText = this.value + 'px'">
+      </div>
+    </div>
+    <div class="tip-box">
+      💡 <strong>Govt Rule:</strong> Passport Seva, UPSC, SSC, NEET, and Visa portals require a <strong>Pure White (#FFFFFF)</strong> or <strong>Light Blue</strong> background without shadows.
+    </div>
+  </div>
+
+  <!-- Tab 4 -->
+  <div class="tab-content" id="stampTab">
+    <div class="grid-3">
+      <div class="control-group">
+        <label>Candidate Name (Name Stamp):</label>
+        <input type="text" id="stampName" placeholder="e.g. SANDHIYA S">
+      </div>
+      <div class="control-group">
+        <label>Date (Calendar Input):</label>
+        <input type="date" id="stampDate">
+      </div>
+      <div class="control-group">
+        <label>Date Label Prefix:</label>
+        <select id="stampLabelPrefix">
+          <option value="DOP: ">DOP: (Date of Photo - Govt Standard)</option>
+          <option value="DOB: ">DOB: (Date of Birth)</option>
+          <option value="DATE: ">DATE: (Standard Date)</option>
+          <option value="">No Prefix (Just Date DD-MM-YYYY)</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="control-group">
+        <label>Name & Date Stamp Banner:</label>
+        <select id="enableStamp">
+          <option value="no">No Stamp (Clean Photo)</option>
+          <option value="yes">Add Name & Date Banner at Bottom</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Signature Cleaner Mode:</label>
+        <select id="sigCleaner">
+          <option value="off">Off (Original Photo Colors)</option>
+          <option value="auto">Auto Clean (Pure White Paper & Dark Ink)</option>
+          <option value="black">Deep Black Ink & Pure White BG</option>
+          <option value="blue">Deep Blue Ink & Pure White BG</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Color Tone Filter:</label>
+        <select id="colorFilter">
+          <option value="none">Original Colors</option>
+          <option value="grayscale">Grayscale / Black & White</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 5 -->
+  <div class="tab-content" id="exportTab">
+    <div class="grid-2">
+      <div class="control-group">
+        <label>Output File Name Prefix:</label>
+        <input type="text" id="filePrefix" value="optimized_doc">
+      </div>
+      <div class="control-group">
+        <label>Action Status:</label>
+        <p style="font-size: 12.5px; color: var(--muted); margin-top: 6px;">
+          Review options across tabs, then run batch processing below.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div style="padding: 0 20px 20px 20px;">
+    <div class="btn-bar">
+      <button class="btn-main" onclick="processBatch()">⚡ Compress & Apply Settings</button>
+      <button class="btn-zip" onclick="downloadAllZip()">📦 Download All (.ZIP)</button>
+      <button class="btn-pdf" onclick="generateBatchPDF()">📄 Merge to PDF</button>
+      <button class="btn-reset-opts" onclick="resetAllOptions()">🔄 Reset Options</button>
+      <button class="btn-clear" onclick="clearAllFiles()">🗑️ Clear Queue</button>
+    </div>
+    <div class="status-msg" id="statusMsg" style="display: none;"></div>
+    <div class="file-list" id="fileList"></div>
+  </div>
+
+  <!-- Cusdis Discussion Widget -->
+  <div class="comments-sec">
+    <h2>💬 User Feedback & Discussion</h2>
+    <div id="cusdis_thread"
+      data-host="https://cusdis.com"
+      data-app-id="95a6f235-9dfa-49bb-b14e-b5c6d3fa7bf5"
+      data-page-id="smart_image_studio_pro"
+      data-page-url=""
+      data-page-title="Smart Image Studio Pro"
+    ></div>
+    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+  </div>
+</div>
+
+<!-- Modal for Crop -->
+<div class="modal" id="cropModal">
+  <div class="modal-content">
+    <h3 style="margin: 0 0 10px 0;">✂️ Crop & Adjust Framing</h3>
+    <div class="crop-box">
+      <img id="cropTargetImage" style="max-width: 100%;">
+    </div>
+    <div class="btn-bar">
+      <button class="btn-main" onclick="saveCrop()">Save Crop</button>
+      <button class="btn-clear" onclick="closeCropModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 1. PWA Manifest & Service Worker
+  (function initPWA() {
+    const manifest = {
+      name: "Smart Image Studio Pro",
+      short_name: "ImageStudio",
+      description: "Govt Exam Presets, AI Background Remover & Batch Photo Resizer",
+      start_url: window.location.href,
+      display: "standalone",
+      background_color: "#0f172a",
+      theme_color: "#6366f1",
+      icons: [{
+        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ccircle cx='50' cy='50' r='24' stroke='white' stroke-width='6' fill='none'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23fcd34d'/%3E%3Cpath d='M24 38 L34 26 H66 L76 38' stroke='white' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E",
+        sizes: "192x192 512x512",
+        type: "image/svg+xml",
+        purpose: "any maskable"
+      }]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+
+    if ('serviceWorker' in navigator) {
+      const sw = `self.addEventListener('install', e=>self.skipWaiting());self.addEventListener('activate', e=>clients.claim());self.addEventListener('fetch', e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;
+      navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type: 'text/javascript'}))).catch(()=>{});
+    }
+  })();
+
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btn = document.getElementById('installAppBtn');
+    if (btn) btn.style.display = 'inline-flex';
+  });
+
+  function triggerAppInstall() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((r) => {
+        if (r.outcome === 'accepted') {
+          const btn = document.getElementById('installAppBtn');
+          if (btn) btn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      });
+    } else {
+      alert('To install this app on PC/Phone:\\n\\n1. Look for the Install Icon in the browser address bar (top right).\\n2. Or open browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
+    }
+  }
+
+  let uploadedFiles = [];
+  let fileCounter = 0;
+  let currentCropper = null;
+  let activeCropId = null;
+  let selfieSegmenterInstance = null;
+
+  function getSegmenter() {
+    if (!selfieSegmenterInstance && window.SelfieSegmentation) {
+      selfieSegmenterInstance = new SelfieSegmentation({
+        locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${f}`
+      });
+      selfieSegmenterInstance.setOptions({ modelSelection: 1 });
+    }
+    return selfieSegmenterInstance;
+  }
+
+  function setStatus(msg) {
+    const el = document.getElementById('statusMsg');
+    if (msg) { el.style.display = 'block'; el.innerText = msg; }
+    else { el.style.display = 'none'; }
+  }
+
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleBgColor() {
+    const mode = document.getElementById('bgMode').value;
+    document.getElementById('customColorGroup').style.display = (mode === 'custom') ? 'flex' : 'none';
+  }
+
+  function quickPreset(name) {
+    document.getElementById('examPreset').value = name;
+    applyExamPreset();
+  }
+
+  function quickBg(val) {
+    document.getElementById('bgMode').value = val;
+    toggleBgColor();
+    setStatus(`Background set to: ${val === 'transparent' ? 'Transparent PNG' : val}. Click Compress!`);
+  }
+
+  window.addEventListener("dragover", e => e.preventDefault());
+  window.addEventListener("drop", e => e.preventDefault());
+
+  const dropzone = document.getElementById('dropzone');
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files.length > 0) handleFiles(Array.from(e.dataTransfer.files));
+  });
+
+  document.getElementById('fileInput').addEventListener('change', (e) => {
+    if (e.target.files.length > 0) handleFiles(Array.from(e.target.files));
+  });
+
+  function handleFiles(files) {
+    files.forEach((file) => {
+      if (!file.type.startsWith('image/')) return;
+      fileCounter++;
+      const currentId = fileCounter;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          uploadedFiles.push({
+            id: currentId,
+            file: file,
+            img: img,
+            name: file.name,
+            originalSize: file.size,
+            src: event.target.result,
+            processedBlob: null,
+            downloadUrl: null
+          });
+          renderInitialCard(file, event.target.result, currentId);
+          setStatus(`Total ${uploadedFiles.length} file(s) in queue. Choose settings and click Compress.`);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('fileInput').value = '';
+  }
+
+  function renderInitialCard(file, src, id) {
+    const list = document.getElementById('fileList');
+    const card = document.createElement('div');
+    card.className = 'file-card';
+    card.id = `card-${id}`;
+
+    card.innerHTML = `
+      <div class="file-info">
+        <img src="${src}" class="file-thumb" id="thumb-${id}">
+        <div class="file-details">
+          <span class="file-name">${file.name}</span>
+          <span class="file-meta">Original: ${formatBytes(file.size)}</span>
+        </div>
+      </div>
+      <div class="action-btns">
+        <button class="btn-sm btn-clear" onclick="openCropModal(${id})">✂️ Crop</button>
+        <span class="badge" style="background:#fef3c7; color:#92400e;">Ready</span>
+      </div>
+    `;
+    list.appendChild(card);
+  }
+
+  function resetAllOptions() {
+    document.getElementById('examPreset').value = 'custom';
+    document.getElementById('sizeTarget').value = '200';
+    document.getElementById('customWidth').value = '';
+    document.getElementById('customHeight').value = '';
+    document.getElementById('dimUnit').value = 'px';
+    document.getElementById('fitMode').value = 'stretch';
+    document.getElementById('customKbInput').value = '';
+    document.getElementById('formatSelect').value = 'image/jpeg';
+    document.getElementById('bgMode').value = 'none';
+    document.getElementById('customBgPicker').value = '#ffffff';
+    document.getElementById('customColorGroup').style.display = 'none';
+    document.getElementById('bgEngine').value = 'ai';
+    document.getElementById('edgeFeather').value = '2';
+    document.getElementById('featherVal').innerText = '2px';
+    document.getElementById('stampName').value = '';
+    document.getElementById('stampDate').value = '';
+    document.getElementById('stampLabelPrefix').value = 'DOP: ';
+    document.getElementById('enableStamp').value = 'no';
+    document.getElementById('sigCleaner').value = 'off';
+    document.getElementById('colorFilter').value = 'none';
+    document.getElementById('filePrefix').value = 'optimized_doc';
+
+    setStatus('🔄 All options reset to default values.');
+  }
+
+  function clearAllFiles() {
+    uploadedFiles.forEach(f => { if (f.downloadUrl) URL.revokeObjectURL(f.downloadUrl); });
+    uploadedFiles = [];
+    document.getElementById('fileList').innerHTML = '';
+    setStatus('Queue cleared.');
+  }
+
+  function formatBytes(bytes) {
+    if (!bytes || bytes === 0) return '0 Bytes';
+    if (bytes < 1024) return bytes + ' Bytes';
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / 1048576).toFixed(2) + ' MB';
+  }
+
+  function applyExamPreset() {
+    const preset = document.getElementById('examPreset').value;
+    const targetSelect = document.getElementById('sizeTarget');
+    const customW = document.getElementById('customWidth');
+    const customH = document.getElementById('customHeight');
+    const unit = document.getElementById('dimUnit');
+    const format = document.getElementById('formatSelect');
+    const sigCleaner = document.getElementById('sigCleaner');
+    const fitMode = document.getElementById('fitMode');
+    const bgMode = document.getElementById('bgMode');
+
+    if (preset === 'upsc_photo') {
+      targetSelect.value = "300"; customW.value = "350"; customH.value = "450"; unit.value = "px";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ssc_photo') {
+      targetSelect.value = "50"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ssc_sig') {
+      targetSelect.value = "20"; customW.value = "4.0"; customH.value = "2.0"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "auto"; fitMode.value = "contain"; bgMode.value = "#ffffff";
+    } else if (preset === 'passport') {
+      targetSelect.value = "50"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'neet_photo') {
+      targetSelect.value = "200"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'gate_photo') {
+      targetSelect.value = "200"; customW.value = "3.5"; customH.value = "4.5"; unit.value = "cm";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ibps_photo') {
+      targetSelect.value = "50"; customW.value = "200"; customH.value = "230"; unit.value = "px";
+      format.value = "image/jpeg"; sigCleaner.value = "off"; fitMode.value = "cover"; bgMode.value = "#ffffff";
+    } else if (preset === 'ibps_sig') {
+      targetSelect.value = "20"; customW.value = "140"; customH.value = "60"; unit.value = "px";
+      format.value = "image/jpeg"; sigCleaner.value = "auto"; fitMode.value = "contain"; bgMode.value = "none";
+    }
+    toggleBgColor();
+    setStatus(`Applied preset: ${preset.toUpperCase()}. Click Compress to run!`);
+  }
+
+  function openCropModal(id) {
+    activeCropId = id;
+    const item = uploadedFiles.find(f => f.id === id);
+    if (!item) return;
+
+    const modal = document.getElementById('cropModal');
+    const img = document.getElementById('cropTargetImage');
+    img.src = item.src;
+    modal.style.display = 'flex';
+
+    if (currentCropper) currentCropper.destroy();
+    currentCropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1 });
+  }
+
+  function closeCropModal() {
+    document.getElementById('cropModal').style.display = 'none';
+    if (currentCropper) { currentCropper.destroy(); currentCropper = null; }
+  }
+
+  function saveCrop() {
+    if (!currentCropper) return;
+    const croppedCanvas = currentCropper.getCroppedCanvas();
+    const croppedSrc = croppedCanvas.toDataURL('image/jpeg', 0.95);
+
+    const item = uploadedFiles.find(f => f.id === activeCropId);
+    if (item) {
+      item.src = croppedSrc;
+      const newImg = new Image();
+      newImg.onload = () => {
+        item.img = newImg;
+        const thumb = document.getElementById(`thumb-${item.id}`);
+        if (thumb) thumb.src = croppedSrc;
+      };
+      newImg.src = croppedSrc;
+    }
+    closeCropModal();
+  }
+
+  // FIXED: Accurate DD-MM-YYYY Date formatting with prefix support
+  function formatDateStamp(dateStr, prefix = "DOP: ") {
+    let formattedDate = "";
+    if (!dateStr) {
+      const d = new Date();
+      const day = String(d.getDate()).padStart(2, '0');
+      const mon = String(d.getMonth() + 1).padStart(2, '0');
+      formattedDate = `${day}-${mon}-${d.getFullYear()}`;
+    } else {
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        formattedDate = `${parts}-${parts}-${parts[0]}`;
+      } else {
+        formattedDate = dateStr;
+      }
+    }
+    return `${prefix}${formattedDate}`;
+  }
+
+  // Helper to draw text scaled dynamically to fit canvas width without clipping
+  function drawFittedText(ctx, text, x, y, maxFontSize, maxWidth, isBold = false) {
+    let fontSize = maxFontSize;
+    ctx.font = `${isBold ? 'bold ' : '600 '}${fontSize}px Arial, system-ui, sans-serif`;
+    while (ctx.measureText(text).width > maxWidth && fontSize > 8) {
+      fontSize -= 1;
+      ctx.font = `${isBold ? 'bold ' : '600 '}${fontSize}px Arial, system-ui, sans-serif`;
+    }
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, x, y);
+  }
+
+  async function getAIMask(imageElem) {
+    return new Promise((resolve) => {
+      try {
+        const seg = getSegmenter();
+        if (!seg) return resolve(null);
+        seg.onResults((r) => resolve(r.segmentationMask || null));
+        seg.send({ image: imageElem }).catch(() => resolve(null));
+      } catch (err) { resolve(null); }
+    });
+  }
+
+  function applyColorKeying(ctx, width, height, targetHex) {
+    const imgData = ctx.getImageData(0, 0, width, height);
+    const d = imgData.data;
+    const corners = [0, (width - 1) * 4, (height - 1) * width * 4, ((height - 1) * width + (width - 1)) * 4];
+    let bgR = 0, bgG = 0, bgB = 0;
+    corners.forEach(i => { bgR += d[i]; bgG += d[i+1]; bgB += d[i+2]; });
+    bgR /= 4; bgG /= 4; bgB /= 4;
+
+    const isTrans = targetHex === 'transparent';
+    const c = targetHex.replace('#', '');
+    const [tR, tG, tB] = !isTrans ? [parseInt(c.substr(0,2),16), parseInt(c.substr(2,2),16), parseInt(c.substr(4,2),16)] : [255,255,255];
+
+    for (let i = 0; i < d.length; i += 4) {
+      let dist = Math.sqrt((d[i]-bgR)**2 + (d[i+1]-bgG)**2 + (d[i+2]-bgB)**2);
+      if (dist < 45) {
+        if (isTrans) d[i+3] = 0;
+        else { d[i] = tR; d[i+1] = tG; d[i+2] = tB; }
+      } else if (dist < 60) {
+        let f = (dist - 45) / 15;
+        if (isTrans) d[i+3] = Math.round(255 * f);
+        else {
+          d[i] = Math.round(d[i]*f + tR*(1-f));
+          d[i+1] = Math.round(d[i+1]*f + tG*(1-f));
+          d[i+2] = Math.round(d[i+2]*f + tB*(1-f));
+        }
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
+  }
+
+  async function compressToTarget(imgItem, targetKB, mimeType) {
+    return new Promise(async (resolve) => {
+      let targetBytes = targetKB * 1024;
+      const customKb = parseInt(document.getElementById('customKbInput').value);
+      if (!isNaN(customKb) && customKb > 0) targetBytes = customKb * 1024;
+
+      let reqW = parseFloat(document.getElementById('customWidth').value);
+      let reqH = parseFloat(document.getElementById('customHeight').value);
+      const unit = document.getElementById('dimUnit').value;
+      const fitMode = document.getElementById('fitMode').value;
+      const bgMode = document.getElementById('bgMode').value;
+      const bgEngine = document.getElementById('bgEngine').value;
+      const customBg = document.getElementById('customBgPicker').value;
+      const feather = parseInt(document.getElementById('edgeFeather').value) || 2;
+
+      let baseW = imgItem.img.width || 800;
+      let baseH = imgItem.img.height || 600;
+
+      if (!isNaN(reqW) && reqW > 0 && !isNaN(reqH) && reqH > 0) {
+        if (unit === 'cm') { baseW = Math.round(reqW * 118.11); baseH = Math.round(reqH * 118.11); }
+        else if (unit === 'mm') { baseW = Math.round(reqW * 11.811); baseH = Math.round(reqH * 11.811); }
+        else if (unit === 'in') { baseW = Math.round(reqW * 300); baseH = Math.round(reqH * 300); }
+        else { baseW = Math.round(reqW); baseH = Math.round(reqH); }
+      }
+
+      let aiMask = null;
+      if (bgMode !== 'none' && bgEngine === 'ai') {
+        aiMask = await getAIMask(imgItem.img);
+      }
+
+      function getBlob(w, h, quality) {
+        return new Promise((res) => {
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(10, Math.round(w));
+          canvas.height = Math.max(10, Math.round(h));
+          const ctx = canvas.getContext('2d');
+
+          const targetBg = bgMode === 'custom' ? customBg : bgMode;
+
+          if (targetBg !== 'transparent' && targetBg !== 'none') {
+            ctx.fillStyle = targetBg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          } else if (targetBg === 'none' && mimeType !== 'image/png') {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+
+          const origW = imgItem.img.width;
+          const origH = imgItem.img.height;
+
+          if (bgMode !== 'none' && aiMask) {
+            const pCanvas = document.createElement('canvas');
+            pCanvas.width = canvas.width;
+            pCanvas.height = canvas.height;
+            const pCtx = pCanvas.getContext('2d');
+
+            if (fitMode === 'cover') {
+              const r = Math.max(canvas.width / origW, canvas.height / origH);
+              const sW = canvas.width / r, sH = canvas.height / r;
+              pCtx.drawImage(imgItem.img, (origW - sW)/2, (origH - sH)/2, sW, sH, 0, 0, canvas.width, canvas.height);
+            } else {
+              pCtx.drawImage(imgItem.img, 0, 0, canvas.width, canvas.height);
+            }
+
+            pCtx.globalCompositeOperation = 'destination-in';
+            if (feather > 0) pCtx.filter = `blur(${feather}px)`;
+            pCtx.drawImage(aiMask, 0, 0, canvas.width, canvas.height);
+            pCtx.filter = 'none';
+            pCtx.globalCompositeOperation = 'source-over';
+
+            ctx.drawImage(pCanvas, 0, 0);
+          } else {
+            if (fitMode === 'contain') {
+              const ratio = Math.min(canvas.width / origW, canvas.height / origH);
+              const sX = (canvas.width - origW * ratio) / 2;
+              const sY = (canvas.height - origH * ratio) / 2;
+              ctx.drawImage(imgItem.img, 0, 0, origW, origH, sX, sY, origW * ratio, origH * ratio);
+            } else if (fitMode === 'cover') {
+              const ratio = Math.max(canvas.width / origW, canvas.height / origH);
+              const sW = canvas.width / ratio, sH = canvas.height / ratio;
+              ctx.drawImage(imgItem.img, (origW - sW)/2, (origH - sH)/2, sW, sH, 0, 0, canvas.width, canvas.height);
+            } else {
+              ctx.drawImage(imgItem.img, 0, 0, canvas.width, canvas.height);
+            }
+
+            if (bgMode !== 'none' && !aiMask) {
+              applyColorKeying(ctx, canvas.width, canvas.height, targetBg);
+            }
+          }
+
+          // ENHANCED SIGNATURE CLEANER
+          const sigMode = document.getElementById('sigCleaner').value;
+          if (sigMode !== 'off') {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const d = imgData.data;
+            const threshold = 155;
+
+            for (let i = 0; i < d.length; i += 4) {
+              let lum = d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114;
+              if (lum > threshold) {
+                // Paper becomes pure white
+                d[i] = 255; d[i+1] = 255; d[i+2] = 255;
+              } else {
+                if (sigMode === 'black') {
+                  let dark = Math.round((lum / threshold) * 50);
+                  d[i] = dark; d[i+1] = dark; d[i+2] = dark;
+                } else if (sigMode === 'blue') {
+                  d[i] = 12; d[i+1] = 45; d[i+2] = 175;
+                } else {
+                  // Auto mode: darken original ink with high contrast
+                  let f = lum < 90 ? 0.35 : 0.65;
+                  d[i] = Math.round(d[i] * f);
+                  d[i+1] = Math.round(d[i] * f);
+                  d[i+2] = Math.round(d[i] * f);
+                }
+              }
+            }
+            ctx.putImageData(imgData, 0, 0);
+          }
+
+          // Grayscale Filter
+          if (document.getElementById('colorFilter').value === 'grayscale') {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const d = imgData.data;
+            for (let i = 0; i < d.length; i += 4) {
+              let avg = Math.round(d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114);
+              d[i] = avg; d[i+1] = avg; d[i+2] = avg;
+            }
+            ctx.putImageData(imgData, 0, 0);
+          }
+
+          // ENHANCED STAMP BANNER (Centered, Unclipped & Auto-fitted)
+          if (document.getElementById('enableStamp').value === 'yes') {
+            const stampName = document.getElementById('stampName').value.trim() || 'SANDHIYA S';
+            const rawDate = document.getElementById('stampDate').value;
+            const prefix = document.getElementById('stampLabelPrefix').value;
+            const stampDateLine = formatDateStamp(rawDate, prefix);
+            
+            const bH = Math.max(34, Math.round(canvas.height * 0.20));
+            const bannerTop = canvas.height - bH;
+
+            // Pure white background for stamp banner
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, bannerTop, canvas.width, bH);
+
+            // Subtle divider border line above stamp banner
+            ctx.strokeStyle = '#CBD5E1';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, bannerTop);
+            ctx.lineTo(canvas.width, bannerTop);
+            ctx.stroke();
+
+            // Render Candidate Name & Date with auto font size fitting
+            const maxTextWidth = canvas.width - 24; // 12px padding on each side
+            ctx.fillStyle = '#000000';
+            
+            // Name: Upper half of banner
+            drawFittedText(ctx, stampName.toUpperCase(), canvas.width / 2, bannerTop + (bH * 0.32), Math.round(bH * 0.35), maxTextWidth, true);
+            
+            // Date: Lower half of banner
+            drawFittedText(ctx, stampDateLine, canvas.width / 2, bannerTop + (bH * 0.72), Math.round(bH * 0.28), maxTextWidth, false);
+          }
+
+          const outMime = (bgMode === 'transparent') ? 'image/png' : mimeType;
+          canvas.toBlob((b) => res(b), outMime, quality);
+        });
+      }
+
+      async function run() {
+        let curW = baseW, curH = baseH;
+
+        if (targetBytes === 0) {
+          let b = await getBlob(curW, curH, 0.95);
+          resolve(b);
+          return;
+        }
+
+        if (mimeType === 'image/png' || bgMode === 'transparent') {
+          let b = await getBlob(curW, curH, 1.0);
+          while (b.size > targetBytes && curW > 120) {
+            curW *= 0.85; curH *= 0.85;
+            b = await getBlob(curW, curH, 1.0);
+          }
+          resolve(b);
+          return;
+        }
+
+        let minQ = 0.05, maxQ = 0.98, bestBlob = null;
+        for (let i = 0; i < 9; i++) {
+          let midQ = (minQ + maxQ) / 2;
+          let testBlob = await getBlob(curW, curH, midQ);
+          if (testBlob.size <= targetBytes) { bestBlob = testBlob; minQ = midQ; }
+          else { maxQ = midQ; }
+        }
+
+        if (!bestBlob || bestBlob.size > targetBytes) {
+          let scaleQ = 0.65;
+          while (curW > 100) {
+            curW *= 0.85; curH *= 0.85;
+            let sBlob = await getBlob(curW, curH, scaleQ);
+            if (sBlob.size <= targetBytes) { bestBlob = sBlob; break; }
+            if (scaleQ > 0.3) scaleQ -= 0.1;
+          }
+          if (!bestBlob) bestBlob = await getBlob(curW, curH, 0.30);
+        }
+        resolve(bestBlob);
+      }
+      run();
+    });
+  }
+
+  async function processBatch() {
+    if (uploadedFiles.length === 0) {
+      alert('Please upload photos first!');
+      return;
+    }
+
+    const targetKB = parseInt(document.getElementById('sizeTarget').value);
+    const mimeType = document.getElementById('formatSelect').value;
+    const prefix = document.getElementById('filePrefix').value.trim() || 'doc';
+    const bgMode = document.getElementById('bgMode').value;
+    const ext = (bgMode === 'transparent' || mimeType === 'image/png') ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
+
+    setStatus('⏳ Processing photos with AI background studio, stamp & smart compression...');
+
+    for (let item of uploadedFiles) {
+      const blob = await compressToTarget(item, targetKB, mimeType);
+      item.processedBlob = blob;
+      if (item.downloadUrl) URL.revokeObjectURL(item.downloadUrl);
+      const downloadUrl = URL.createObjectURL(blob);
+      item.downloadUrl = downloadUrl;
+
+      const card = document.getElementById(`card-${item.id}`);
+      if (!card) continue;
+
+      const savings = Math.round(((item.originalSize - blob.size) / item.originalSize) * 100);
+
+      card.innerHTML = `
+        <div class="file-info">
+          <img src="${downloadUrl}" class="file-thumb" id="thumb-${item.id}">
+          <div class="file-details">
+            <span class="file-name">${item.name}</span>
+            <span class="file-meta">Original: ${formatBytes(item.originalSize)} ➔ <strong>Target: ${formatBytes(blob.size)}</strong></span>
+          </div>
+        </div>
+        <div class="action-btns">
+          <span class="badge badge-ok">${savings > 0 ? '-' + savings + '%' : savings === 0 ? 'Exact' : '+' + Math.abs(savings) + '%'}</span>
+          <button class="btn-sm btn-clear" onclick="openCropModal(${item.id})">✂️ Crop</button>
+          <button class="btn-sm btn-copy" onclick="copyToClipboard(${item.id})">📋 Copy</button>
+          <a href="${downloadUrl}" download="${prefix}_${item.id}.${ext}" class="btn-sm btn-dl">Download</a>
+        </div>
+      `;
+    }
+    setStatus('✅ Processing complete! Download individual files or export bundle below.');
+  }
+
+  async function downloadAllZip() {
+    if (uploadedFiles.length === 0 || !uploadedFiles.some(f => f.processedBlob)) {
+      alert('Please click "Compress & Apply Settings" first before downloading as ZIP!');
+      return;
+    }
+
+    const zip = new JSZip();
+    const prefix = document.getElementById('filePrefix').value.trim() || 'doc';
+    const mimeType = document.getElementById('formatSelect').value;
+    const bgMode = document.getElementById('bgMode').value;
+    const ext = (bgMode === 'transparent' || mimeType === 'image/png') ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
+
+    uploadedFiles.forEach((item, idx) => {
+      if (item.processedBlob) {
+        zip.file(`${prefix}_${idx + 1}.${ext}`, item.processedBlob);
+      }
+    });
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(zipBlob);
+    link.download = `${prefix}_batch_bundle.zip`;
+    link.click();
+  }
+
+  async function copyToClipboard(id) {
+    const item = uploadedFiles.find(f => f.id === id);
+    if (!item || !item.processedBlob) return alert('Compress the image first.');
+
+    try {
+      let pngBlob = item.processedBlob;
+      if (item.processedBlob.type !== 'image/png') {
+        const img = new Image();
+        await new Promise((res) => {
+          img.onload = res;
+          img.src = item.downloadUrl || URL.createObjectURL(item.processedBlob);
+        });
+        const c = document.createElement('canvas');
+        c.width = img.width; c.height = img.height;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        pngBlob = await new Promise(res => c.toBlob(res, 'image/png'));
+      }
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+      alert('✅ Image copied to clipboard as PNG!');
+    } catch (err) {
+      alert('Direct clipboard copy is not supported in this browser context.');
+    }
+  }
+
+  async function generateBatchPDF() {
+    if (uploadedFiles.length === 0) return alert('Upload photos first!');
+    const { jsPDF } = window.jspdf;
+    let pdf = null;
+    const prefix = document.getElementById('filePrefix').value.trim() || 'documents';
+
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      const item = uploadedFiles[i];
+      let imgData = item.src;
+      if (item.processedBlob) {
+        imgData = await new Promise((res) => {
+          const r = new FileReader();
+          r.onload = () => res(r.result);
+          r.readAsDataURL(item.processedBlob);
+        });
+      }
+
+      const tempImg = new Image();
+      await new Promise((res) => { tempImg.onload = res; tempImg.src = imgData; });
+
+      const w = tempImg.width || 800;
+      const h = tempImg.height || 600;
+      const isL = w > h;
+
+      if (i === 0) {
+        pdf = new jsPDF({ orientation: isL ? 'landscape' : 'portrait', unit: 'px', format: [w, h] });
+      } else {
+        pdf.addPage([w, h], isL ? 'landscape' : 'portrait');
+      }
+      pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
+    }
+    pdf.save(`${prefix}_merged.pdf`);
+  }
+</script>
+</body>
+</html>
