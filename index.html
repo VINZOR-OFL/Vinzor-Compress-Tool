@@ -470,7 +470,7 @@
         <label>Date Label Prefix:</label>
         <select id="stampLabelPrefix" onchange="updateStampPreview()">
           <option value="DOP: ">DOP: (Date of Photo - Govt Standard)</option>
-          <option value="DOB: ">DOB: (Date of Birth)</option>
+          <option value="DOB: " selected>DOB: (Date of Birth)</option>
           <option value="DATE: ">DATE: (Standard Date)</option>
           <option value="">No Prefix (Just DD-MM-YYYY)</option>
         </select>
@@ -481,7 +481,7 @@
     <div class="stamp-preview-box">
       <div style="font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Live Stamp Banner Preview:</div>
       <div id="livePreviewName" style="font-size: 15px; font-weight: 800; color: #0f172a; text-transform: uppercase;">SANDHIYA S</div>
-      <div id="livePreviewDate" style="font-size: 13.5px; font-weight: 700; color: #1e293b; margin-top: 2px;">DOB: 23-07-2005</div>
+      <div id="livePreviewDate" style="font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 3px;">DOB: 23-07-2005</div>
     </div>
 
     <div class="grid-3" style="margin-top: 14px;">
@@ -619,7 +619,7 @@
         deferredPrompt = null;
       });
     } else {
-      alert('To install this app on PC/Phone:\n\n1. Look for the Install Icon (monitor with down arrow) in your browser address bar at the top right.\n2. Or click the browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
+      alert('To install this app on PC/Phone:\\n\\n1. Look for the Install Icon in the browser address bar (top right).\\n2. Or click the browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
     }
   }
 
@@ -769,8 +769,8 @@
     document.getElementById('featherVal').innerText = '2px';
     document.getElementById('stampName').value = '';
     document.getElementById('stampDate').value = '';
-    document.getElementById('stampLabelPrefix').value = 'DOP: ';
-    document.getElementById('enableStamp').value = 'no';
+    document.getElementById('stampLabelPrefix').value = 'DOB: ';
+    document.getElementById('enableStamp').value = 'yes';
     document.getElementById('sigCleaner').value = 'off';
     document.getElementById('colorFilter').value = 'none';
     document.getElementById('filePrefix').value = 'optimized_doc';
@@ -873,25 +873,22 @@
     closeCropModal();
   }
 
-  // --- STRICT REGEX DATE PARSER ---
+  // --- BULLETPROOF SUBSTRING SLICE DATE FORMATTER (DD-MM-YYYY) ---
   function getCleanFormattedDate(dateStr, prefix) {
-    prefix = prefix !== undefined ? prefix : "DOP: ";
-    if (!dateStr || dateStr.trim() === '') {
-      const now = new Date();
-      const dd = String(now.getDate()).padStart(2, '0');
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const yyyy = now.getFullYear();
-      return prefix + dd + '-' + mm + '-' + yyyy;
+    var p = (prefix !== undefined && prefix !== null) ? prefix : "DOP: ";
+    if (!dateStr || typeof dateStr !== 'string' || dateStr.length < 10) {
+      var now = new Date();
+      var d = ('0' + now.getDate()).slice(-2);
+      var m = ('0' + (now.getMonth() + 1)).slice(-2);
+      var y = now.getFullYear();
+      return p + d + '-' + m + '-' + y;
     }
 
-    const match = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if (match) {
-      const yyyy = match;
-      const mm = match;
-      const dd = match;
-      return prefix + dd + '-' + mm + '-' + yyyy;
-    }
-    return prefix + dateStr;
+    // dateStr is formatted as "YYYY-MM-DD" e.g. "2005-07-23"
+    var yyyy = dateStr.slice(0, 4);
+    var mm = dateStr.slice(5, 7);
+    var dd = dateStr.slice(8, 10);
+    return p + dd + '-' + mm + '-' + yyyy;
   }
 
   function updateStampPreview() {
@@ -901,7 +898,7 @@
     
     const nameVal = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : 'SANDHIYA S';
     const rawDate = dateInput ? dateInput.value : '';
-    const prefixVal = prefixSelect ? prefixSelect.value : 'DOP: ';
+    const prefixVal = prefixSelect ? prefixSelect.value : 'DOB: ';
     const formattedDate = getCleanFormattedDate(rawDate, prefixVal);
 
     const prevName = document.getElementById('livePreviewName');
@@ -1099,7 +1096,7 @@
             
             const stampName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : 'SANDHIYA S';
             const rawDate = dateInput ? dateInput.value : '';
-            const prefixVal = prefixSelect ? prefixSelect.value : 'DOP: ';
+            const prefixVal = prefixSelect ? prefixSelect.value : 'DOB: ';
             const stampDateLine = getCleanFormattedDate(rawDate, prefixVal);
             
             const bH = Math.max(34, Math.round(canvas.height * 0.20));
