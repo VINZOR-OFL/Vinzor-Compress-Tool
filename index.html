@@ -198,14 +198,14 @@
       outline: none;
     }
     select:focus, input:focus { border-color: var(--primary); }
-    .tip-box {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--primary);
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 11.5px;
-      color: #475569;
+    .stamp-preview-box {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      margin-top: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
     .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
     button {
@@ -453,38 +453,43 @@
         <input type="range" id="edgeFeather" min="0" max="8" value="2" oninput="document.getElementById('featherVal').innerText = this.value + 'px'">
       </div>
     </div>
-    <div class="tip-box">
-      💡 <strong>Govt Rule:</strong> Passport Seva, UPSC, SSC, NEET, and Visa portals require a <strong>Pure White (#FFFFFF)</strong> or <strong>Light Blue</strong> background without shadows.
-    </div>
   </div>
 
-  <!-- Tab 4 -->
+  <!-- Tab 4: Stamps & Signature Enhancer -->
   <div class="tab-content" id="stampTab">
     <div class="grid-3">
       <div class="control-group">
         <label>Candidate Name (Name Stamp):</label>
-        <input type="text" id="stampName" placeholder="e.g. SANDHIYA S">
+        <input type="text" id="stampName" placeholder="e.g. SANDHIYA S" oninput="updateStampPreview()">
       </div>
       <div class="control-group">
-        <label>Date (Calendar Input):</label>
-        <input type="date" id="stampDate">
+        <label>Date (Calendar / Birthday):</label>
+        <input type="date" id="stampDate" oninput="updateStampPreview()">
       </div>
       <div class="control-group">
         <label>Date Label Prefix:</label>
-        <select id="stampLabelPrefix">
+        <select id="stampLabelPrefix" onchange="updateStampPreview()">
           <option value="DOP: ">DOP: (Date of Photo - Govt Standard)</option>
           <option value="DOB: ">DOB: (Date of Birth)</option>
           <option value="DATE: ">DATE: (Standard Date)</option>
-          <option value="">No Prefix (Just Date DD-MM-YYYY)</option>
+          <option value="">No Prefix (Just DD-MM-YYYY)</option>
         </select>
       </div>
     </div>
-    <div class="grid-3">
+
+    <!-- Live Interactive Stamp Banner Preview -->
+    <div class="stamp-preview-box">
+      <div style="font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Live Stamp Banner Preview:</div>
+      <div id="livePreviewName" style="font-size: 15px; font-weight: 800; color: #0f172a; text-transform: uppercase;">SANDHIYA S</div>
+      <div id="livePreviewDate" style="font-size: 13.5px; font-weight: 700; color: #1e293b; margin-top: 2px;">DOB: 23-07-2005</div>
+    </div>
+
+    <div class="grid-3" style="margin-top: 14px;">
       <div class="control-group">
         <label>Name & Date Banner:</label>
         <select id="enableStamp">
           <option value="no">No Stamp (Clean Photo)</option>
-          <option value="yes">Add Name & Date Banner at Bottom</option>
+          <option value="yes" selected>Add Name & Date Banner at Bottom</option>
         </select>
       </div>
       <div class="control-group">
@@ -614,7 +619,7 @@
         deferredPrompt = null;
       });
     } else {
-      alert('To install this app on PC/Phone:\\n\\n1. Look for the Install Icon in the browser address bar (top right).\\n2. Or click the browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
+      alert('To install this app on PC/Phone:\n\n1. Look for the Install Icon (monitor with down arrow) in your browser address bar at the top right.\n2. Or click the browser menu (⋮) -> Select "Install Smart Image Studio Pro" / "Add to Home screen".');
     }
   }
 
@@ -652,7 +657,10 @@
 
   function toggleBgColor() {
     const mode = document.getElementById('bgMode').value;
-    document.getElementById('customColorGroup').style.display = (mode === 'custom') ? 'flex' : 'none';
+    const customGroup = document.getElementById('customColorGroup');
+    if (customGroup) {
+      customGroup.style.display = (mode === 'custom') ? 'flex' : 'none';
+    }
   }
 
   function quickPreset(name) {
@@ -687,6 +695,7 @@
         if (e.target.files.length > 0) handleFiles(Array.from(e.target.files));
       });
     }
+    updateStampPreview();
   });
 
   function handleFiles(files) {
@@ -766,6 +775,7 @@
     document.getElementById('colorFilter').value = 'none';
     document.getElementById('filePrefix').value = 'optimized_doc';
 
+    updateStampPreview();
     setStatus('🔄 All options reset to default values.');
   }
 
@@ -863,35 +873,49 @@
     closeCropModal();
   }
 
-  // FIXED: Accurate DD-MM-YYYY Date formatting with prefix support
-  function formatDateStamp(dateStr, prefix = "DOP: ") {
-    let formattedDate = "";
-    if (!dateStr) {
-      const d = new Date();
-      const day = String(d.getDate()).padStart(2, '0');
-      const mon = String(d.getMonth() + 1).padStart(2, '0');
-      const yr = d.getFullYear();
-      formattedDate = day + "-" + mon + "-" + yr;
-    } else {
-      const parts = dateStr.split('-');
-      if (parts.length === 3) {
-        const yr = parts[0];
-        const mon = parts;
-        const day = parts;
-        formattedDate = day + "-" + mon + "-" + yr;
-      } else {
-        formattedDate = dateStr;
-      }
+  // --- STRICT REGEX DATE PARSER ---
+  function getCleanFormattedDate(dateStr, prefix) {
+    prefix = prefix !== undefined ? prefix : "DOP: ";
+    if (!dateStr || dateStr.trim() === '') {
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      return prefix + dd + '-' + mm + '-' + yyyy;
     }
-    return prefix + formattedDate;
+
+    const match = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (match) {
+      const yyyy = match;
+      const mm = match;
+      const dd = match;
+      return prefix + dd + '-' + mm + '-' + yyyy;
+    }
+    return prefix + dateStr;
   }
 
-  function drawFittedText(ctx, text, x, y, maxFontSize, maxWidth, isBold = false) {
+  function updateStampPreview() {
+    const nameInput = document.getElementById('stampName');
+    const dateInput = document.getElementById('stampDate');
+    const prefixSelect = document.getElementById('stampLabelPrefix');
+    
+    const nameVal = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : 'SANDHIYA S';
+    const rawDate = dateInput ? dateInput.value : '';
+    const prefixVal = prefixSelect ? prefixSelect.value : 'DOP: ';
+    const formattedDate = getCleanFormattedDate(rawDate, prefixVal);
+
+    const prevName = document.getElementById('livePreviewName');
+    const prevDate = document.getElementById('livePreviewDate');
+    if (prevName) prevName.innerText = nameVal.toUpperCase();
+    if (prevDate) prevDate.innerText = formattedDate;
+  }
+
+  function drawFittedText(ctx, text, x, y, maxFontSize, maxWidth, isBold) {
     let fontSize = maxFontSize;
-    ctx.font = `${isBold ? 'bold ' : '600 '}${fontSize}px Arial, system-ui, sans-serif`;
-    while (ctx.measureText(text).width > maxWidth && fontSize > 8) {
+    ctx.font = (isBold ? 'bold ' : '600 ') + fontSize + 'px system-ui, Arial, sans-serif';
+    while (ctx.measureText(text).width > maxWidth && fontSize > 7) {
       fontSize -= 1;
-      ctx.font = `${isBold ? 'bold ' : '600 '}${fontSize}px Arial, system-ui, sans-serif`;
+      ctx.font = (isBold ? 'bold ' : '600 ') + fontSize + 'px system-ui, Arial, sans-serif';
     }
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -931,8 +955,8 @@
         if (isTrans) d[i+3] = Math.round(255 * f);
         else {
           d[i] = Math.round(d[i]*f + tR*(1-f));
-          d[i+1] = Math.round(d[i+1]*f + tG*(1-f));
-          d[i+2] = Math.round(d[i+2]*f + tB*(1-f));
+          d[i+1] = Math.round(d[i]*f + tG*(1-f));
+          d[i+2] = Math.round(d[i]*f + tB*(1-f));
         }
       }
     }
@@ -1029,6 +1053,7 @@
             }
           }
 
+          // Signature Cleaner
           const sigMode = document.getElementById('sigCleaner').value;
           if (sigMode !== 'off') {
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -1066,11 +1091,16 @@
             ctx.putImageData(imgData, 0, 0);
           }
 
+          // STAMP BANNER RENDER
           if (document.getElementById('enableStamp').value === 'yes') {
-            const stampName = document.getElementById('stampName').value.trim() || 'SANDHIYA S';
-            const rawDate = document.getElementById('stampDate').value;
-            const prefix = document.getElementById('stampLabelPrefix').value;
-            const stampDateLine = formatDateStamp(rawDate, prefix);
+            const nameInput = document.getElementById('stampName');
+            const dateInput = document.getElementById('stampDate');
+            const prefixSelect = document.getElementById('stampLabelPrefix');
+            
+            const stampName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : 'SANDHIYA S';
+            const rawDate = dateInput ? dateInput.value : '';
+            const prefixVal = prefixSelect ? prefixSelect.value : 'DOP: ';
+            const stampDateLine = getCleanFormattedDate(rawDate, prefixVal);
             
             const bH = Math.max(34, Math.round(canvas.height * 0.20));
             const bannerTop = canvas.height - bH;
